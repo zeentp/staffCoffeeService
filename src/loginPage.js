@@ -4,7 +4,6 @@ import 'antd/dist/antd.css';
 import firebase, { auth, provider } from './firebase.js';
 import { Form, Input, Button, Checkbox } from 'antd';
 
-
 const onFinish = (values) => {
   console.log('Success:', values);
 };
@@ -16,7 +15,6 @@ const onFinishFailed = (errorInfo) => {
 class loginPage extends React.Component {
   constructor(props) {
     super(props)
-
     this.state = {
       userr: "",
 
@@ -25,9 +23,8 @@ class loginPage extends React.Component {
   render() {
     return (
       <div class="bg">
-      <Form 
-        name="basic" initialValues={{ remember: true,}}  onFinish={onFinish} onFinishFailed={onFinishFailed}>
-        <Form.Item class=""
+      <Form  name="basic" initialValues={{ remember: true,}}  onFinish={onFinish} onFinishFailed={onFinishFailed}>
+        <Form.Item
           label="Username"
           name="username"
           rules={[
@@ -40,7 +37,7 @@ class loginPage extends React.Component {
           <Input />
         </Form.Item>
 
-        <Form.Item
+        <Form.Item 
           label="Password"
           name="password"
           rules={[
