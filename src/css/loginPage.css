@@ -9,8 +9,13 @@
     font-family: Tahoma;
 }
 .body{
-    display: flex;
-    width: 600;
+    color: rebeccapurple;
+}
+.card{
+    color: rebeccapurple;
+    margin-right: 10%;
+
+    
 }
 .h1{
     color: rgb(5, 1, 252);
@@ -21,7 +26,7 @@
     display: flex;
     flex-direction: column;
     text-align: start;
-    width: 35%;
+    width: 20%;
     margin-left: auto;
     margin-right: auto;
     margin-top: 3%;

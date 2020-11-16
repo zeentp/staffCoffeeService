@@ -1,4 +1,4 @@
-import firebase from 'firebase/app'
+import firebase from 'firebase';
 import 'firebase/storage'
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -10,7 +10,6 @@ const firebaseConfig = {
     storageBucket: "coffeeshops-ddd2c.appspot.com",
     messagingSenderId: "1028457274837",
     appId: "1:1028457274837:web:044176a01f13351111f15c",
-    measurementId: "G-TL2ESNZS85"
   };
 
 firebase.initializeApp(firebaseConfig) ;
