@@ -1,6 +1,19 @@
 .bg {
-    background-color: firebrick;
-    text-align: center;
+    background-color: rgb(105, 105, 105);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url(bg.jpg) no-repeat;
+    background-size: cover;
+    font-family: Tahoma;
+}
+.body{
+    color:teal (0, 0, 0);
+    align-items: center;
+    justify-content: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+
 }
 .ha{
     color: blue;
