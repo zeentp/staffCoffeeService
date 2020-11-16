@@ -22,8 +22,8 @@ class loginPage extends React.Component {
   }
   render() {
     return (
-      <div class="bg">
-        <Card title="Coffee Shop" style={{ width: 500}} class="body">
+      <div class = 'bg'>
+        <Card title="Coffee Shop" style={{ width: 500}}>
           <Form
             name="basic" initialValues={{ remember: true, }} onFinish={onFinish} onFinishFailed={onFinishFailed}>
             <Form.Item
