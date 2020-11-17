@@ -6,6 +6,7 @@ import OrderPage from './OrderPage.js';
 import SalesPage from './SalesPage.js';
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import homePage from './homePage.js';
 
 class App extends React.Component {
   render() {

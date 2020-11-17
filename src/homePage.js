@@ -20,12 +20,8 @@ class homePage extends React.Component {
                     className="site-page-header"
                     onBack={(loginPage) => null}
                     title="Coffee Shop"
-                    subTitle="Home Page"
-                >
+                    subTitle="Home Page" >
                     <Row gutter={[16, 16]}>
-
-
-
                         <Col span={8}>
                             <div>
                             <Card title="Information" className="card"
@@ -39,12 +35,10 @@ class homePage extends React.Component {
                             </div>
                     </Col>
                         <Col span={16}>
-                
                                 <Card title="Menu" className="body  ">
                                 <Link to="/SalesPage" ><img src={salesPage} className="center"/></Link>
                                 <Link to="/OrderPage"><img src={OrderImg} className="center"/></Link>
                                 </Card>
-
                         </Col>
                     </Row>
                 </PageHeader>

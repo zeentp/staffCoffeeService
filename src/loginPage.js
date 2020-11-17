@@ -5,11 +5,11 @@ import firebase from './firebase.js';
 import { Form, Input, Button, Checkbox, Card } from 'antd';
 import { Link } from 'react-router-dom';
 const db = firebase.firestore();
-let user = [];
-let password = [];
-let login = [];
+
 const onFinish = (values) => {
-  console.log('Success:', values);
+  let user = [];
+  let password = [];
+  let login = [];
   console.log('username:', values.username);
   console.log('password:', values.password);
   db.collection('user').get().then(function (querySnapshot) {
@@ -19,7 +19,7 @@ const onFinish = (values) => {
       user.push(doc.data().username);
       password.push(doc.data().password);
     });
-  });
+  }).then
   var i;
   for (i = 0; user.length; i++) {
     if (values.username == user[i]) {
@@ -30,7 +30,6 @@ const onFinish = (values) => {
       }
     }
   }
-
 };
 
 const onFinishFailed = (errorInfo) => {
@@ -48,7 +47,7 @@ class loginPage extends React.Component {
     this.setState({
       data: login,
     });
-  
+
   }
   render() {
     return (
@@ -83,7 +82,7 @@ class loginPage extends React.Component {
             </Form.Item>
             <Form.Item >
               <Button type="primary" htmlType="submit" onClick={this.onSubmit} >
-                Submit         
+                Submit
           </Button>
             </Form.Item>
           </Form>

@@ -5,10 +5,11 @@ import OrderImg from './img/buyButton.png';
 import salesPage from './img/sellButton.png';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import firebase, { auth, provider } from './firebase.js';
-import { Statistic, Button, Checkbox, Card, Layout, Menu, Breadcrumb, Table } from 'antd';
+import { Statistic, Button, Card, Layout, Menu, Breadcrumb, Table, Tabs, Row, Col } from 'antd';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { getKeyThenIncreaseKey } from 'antd/lib/message';
 const { Meta } = Card;
+const { TabPane } = Tabs;
 const { Header, Content, Footer } = Layout;
 const data = [
     {
@@ -81,7 +82,6 @@ class OrderPage extends React.Component {
         this.setState({ percent });
     };
     render() {
-
         return (
             <Layout className="layout">
                 <Header>
@@ -98,12 +98,24 @@ class OrderPage extends React.Component {
                         <Breadcrumb.Item>App</Breadcrumb.Item>
                     </Breadcrumb>
                     {/* <div className="site-layout-content">Content</div> */}
-                    <Table pagination={false} className="table" columns={this.state.columns} dataSource={data} />
-                    <Button.Group>
-                        <Button onClick={this.decline} icon={<MinusOutlined />} />
-                        <Statistic value={this.state.percent} />
-                        <Button onClick={this.increase} icon={<PlusOutlined />} />
-                    </Button.Group>
+                    <Row className="site-layout-content">
+                        <Col> <Table pagination={false} className="table" columns={this.state.columns} dataSource={data} /></Col>
+                        <Col>
+                            <Button.Group>
+                                <Button onClick={this.decline} icon={<MinusOutlined />} />
+                                <Statistic value={this.state.percent} />
+                                <Button onClick={this.increase} icon={<PlusOutlined />} />
+                            </Button.Group>
+                        </Col>
+                        <Col>
+                            <Button.Group>
+                                <Button onClick={this.decline} icon={<MinusOutlined />} />
+                                <Statistic value={this.state.percent} />
+                                <Button onClick={this.increase} icon={<PlusOutlined />} />
+                            </Button.Group>
+                        </Col>
+                    </Row>
+
 
                 </Content>
                 <Footer style={{ textAlign: 'center', position: 'fixed', left: 0, bottom: 0, width: "100%" }}>Ant Design ©2018 Created by Ant UED</Footer>
