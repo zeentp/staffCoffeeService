@@ -5,7 +5,9 @@ import OrderImg from './img/buyButton.png';
 import salesPage from './img/sellButton.png';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import firebase, { auth, provider } from './firebase.js';
-import { Row, Col, Form, Input, Button, Checkbox, Card, Layout, Menu, Breadcrumb, Table } from 'antd';
+import { Statistic, Button, Checkbox, Card, Layout, Menu, Breadcrumb, Table } from 'antd';
+import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import { getKeyThenIncreaseKey } from 'antd/lib/message';
 const { Meta } = Card;
 const { Header, Content, Footer } = Layout;
 const data = [
@@ -33,6 +35,7 @@ const data = [
 ];
 class OrderPage extends React.Component {
     state = {
+        percent: 0,
         columns: [
             {
                 title: 'description',
@@ -61,6 +64,22 @@ class OrderPage extends React.Component {
             }
         ],
     };
+
+    increase = () => {
+        let percent = this.state.percent + 1;
+        if (percent > 100) {
+            percent = 100;
+        }
+        this.setState({ percent });
+    };
+
+    decline = () => {
+        let percent = this.state.percent - 1;
+        if (percent < 0) {
+            percent = 0;
+        }
+        this.setState({ percent });
+    };
     render() {
 
         return (
@@ -80,9 +99,14 @@ class OrderPage extends React.Component {
                     </Breadcrumb>
                     {/* <div className="site-layout-content">Content</div> */}
                     <Table pagination={false} className="table" columns={this.state.columns} dataSource={data} />
-                    
+                    <Button.Group>
+                        <Button onClick={this.decline} icon={<MinusOutlined />} />
+                        <Statistic value={this.state.percent} />
+                        <Button onClick={this.increase} icon={<PlusOutlined />} />
+                    </Button.Group>
+
                 </Content>
-                <Footer style={{ textAlign: 'center', position:'fixed', left: 0, bottom: 0, width: "100%"}}>Ant Design ©2018 Created by Ant UED</Footer>
+                <Footer style={{ textAlign: 'center', position: 'fixed', left: 0, bottom: 0, width: "100%" }}>Ant Design ©2018 Created by Ant UED</Footer>
             </Layout>
         );
     }
