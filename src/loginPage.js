@@ -8,8 +8,30 @@ const db = firebase.firestore();
 let user = [];
 let password = [];
 let login = [];
-let inputUser = "";
-let inputPass = "";
+const onFinish = (values) => {
+  console.log('Success:', values);
+  console.log('username:', values.username);
+  console.log('password:', values.password);
+  db.collection('user').get().then(function (querySnapshot) {
+    querySnapshot.forEach(function (doc) {
+      console.log(doc.id, " => ", doc.data().username);
+      console.log(doc.id, " => ", doc.data().password);
+      user.push(doc.data().username);
+      password.push(doc.data().password);
+    });
+  });
+  var i;
+  for (i = 0; user.length; i++) {
+    if (values.username == user[i]) {
+      if (values.password == password[i]) {
+        login.push(values.username)
+        login.push(values.password)
+
+      }
+    }
+  }
+
+};
 
 const onFinishFailed = (errorInfo) => {
   console.log('Failed:', errorInfo);
@@ -18,42 +40,16 @@ class loginPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      name: ""
+      data: [],
+
     }
   }
-  onFinish = (values) => {
-    console.log('Success:', values);
-    inputUser = values.username;
-    inputPass = values.password;
-  };
-
-  onSubmit = (values) => {
-    console.log('username:', values);
-    console.log('password:', values.password);
-    db.collection('user').get().then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        console.log(doc.id, " => ", doc.data());
-        console.log(doc.id, " => ", doc.data().password);
-        user.push(doc.data().username);
-        password.push(doc.data().password);
-      })
-    }).then(docRef => {
-        console.log("add success~")
-        for (var i = 0; user.length; i++) {
-          if (values.username == user[i]) {
-            if (values.password == password[i]) {
-              console.log("yah")
-              this.setState({
-                name: inputUser
-              })
-              console.log(this.state.name)
-              window.location.href = "/HomePage"
-            }
-          }
-        }
-    })
+  onSubmit = () => {
+    this.setState({
+      data: login,
+    });
+  
   }
-
   render() {
     return (
       <div class="bg">
@@ -87,7 +83,7 @@ class loginPage extends React.Component {
             </Form.Item>
             <Form.Item >
               <Button type="primary" htmlType="submit" onClick={this.onSubmit} >
-                Submit
+                Submit         
           </Button>
             </Form.Item>
           </Form>

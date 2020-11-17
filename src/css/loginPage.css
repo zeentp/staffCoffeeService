@@ -9,14 +9,28 @@
     font-family: Tahoma;
 }
 .body{
-    color:teal (0, 0, 0);
-    align-items: center;
-    justify-content: center;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-
+    color: rebeccapurple;
 }
-.ha{
-    color: blue;
+.card{
+    color: rebeccapurple;
+    margin-right: 10%;
+}
+.h1{
+    color: rgb(5, 1, 252);
+    font-size: 80;
+    display: flex;
+}
+.center{
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+    width: 20%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 3%;
+    justify-content: flex-start; 
+    padding-bottom: 2%;
+    align-content: flex-start;
 }
 
 
