@@ -8,8 +8,6 @@ import { Row, Col, Form, Input, Button, Checkbox, Card } from 'antd';
 const { Meta } = Card;
 class SalesPage extends React.Component {
     constructor(props) {
-        super(props)
-
         this.state = {
             userr: "",
 
