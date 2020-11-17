@@ -45,7 +45,7 @@ class homePage extends React.Component {
                     </Col>
                         <Col span={16}>
                 
-                                <Card title="Menu" className="body  ">
+                                <Card title="Menu" className="body">
                                 <Link to="/SalesPage" ><img src={salesPage} className="center"/></Link>
                                 <Link to="/OrderPage"><img src={OrderImg} className="center"/></Link>
                                 </Card>

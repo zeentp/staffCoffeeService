@@ -21,7 +21,7 @@ const onFinish = (values) => {
     });
   });
   var i;
-  usernameDisplay = values.username;
+  //usernameDisplay = values.username;
   for (i = 0; user.length; i++) {
     if (values.username == user[i]) {
       if (values.password == password[i]) {
@@ -50,7 +50,7 @@ class loginPage extends React.Component {
     this.setState({
       data: login,
     });
-    <Link to={{ pathname: "/loginPage", data: data}} ></Link>
+   // <Link to={{ pathname: "/loginPage", data: data}} ></Link>
   }
   render() {
     return (

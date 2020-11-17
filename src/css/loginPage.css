@@ -10,6 +10,7 @@
 }
 .body{
     color: rebeccapurple;
+    background-color: lightblue;
 }
 .card{
     color: rebeccapurple;
@@ -23,13 +24,11 @@
     display: flex;
 }
 .center{
-    display: flex;
+    left: 0 px;
+    display: inline-block;
     flex-direction: column;
     text-align: start;
-    width: 20%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 3%;
+    width: 20%;   
     justify-content: flex-start; 
     padding-bottom: 2%;
     align-content: flex-start;
