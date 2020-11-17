@@ -21,7 +21,6 @@ const onFinish = (values) => {
     });
   });
   var i;
-  //usernameDisplay = values.username;
   for (i = 0; user.length; i++) {
     if (values.username == user[i]) {
       if (values.password == password[i]) {
@@ -37,7 +36,6 @@ const onFinish = (values) => {
 const onFinishFailed = (errorInfo) => {
   console.log('Failed:', errorInfo);
 };
-
 class loginPage extends React.Component {
   constructor(props) {
     super(props)
@@ -50,14 +48,14 @@ class loginPage extends React.Component {
     this.setState({
       data: login,
     });
-   // <Link to={{ pathname: "/loginPage", data: data}} ></Link>
+  
   }
   render() {
     return (
       <div class="bg">
         <Card title="Coffee Shop" style={{ width: 500 }} class="body">
           <Form
-            name="basic" initialValues={{ remember: true, }} onFinish={onFinish} onFinishFailed={onFinishFailed}>
+            name="basic" initialValues={{ remember: true, }} onFinish={this.onFinish} onFinishFailed={onFinishFailed}>
             <Form.Item
               label="Username"
               name="username"

@@ -6,16 +6,38 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import firebase, { auth, provider } from './firebase.js';
 import {PageHeader,Card } from 'antd';
 const { Meta } = Card;
-class SalesPage extends React.Component {
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            userr: "",
-
-        }
-    }
-
+class OrderPage extends React.Component {
+    state = {
+        percent: 0,
+        columns: [
+            {
+                title: 'description',
+                dataIndex: 'name',
+                width: 200,
+            },
+            {
+                title: 'Type',
+                dataIndex: 'type',
+                width: 100,
+            },
+            {
+                title: 'Units',
+                dataIndex: 'unit',
+                width: 100,
+            },
+            {
+                title: 'Units Price',
+                dataIndex: 'unitPrice',
+                width: 100,
+            },
+            {
+                title: 'Amount',
+                dataIndex: 'amount',
+                width: 100,
+            }
+        ],
+    };
+    
     render() {
 
         return (
@@ -36,9 +58,10 @@ class SalesPage extends React.Component {
                                 <Meta title="Username" description="kk"/>
                                 <Meta title="Role" description="Admin" />
                             </Card>
+                            
             </PageHeader>
             </div>
         );
     }
 }
-export default SalesPage;
+export default salesPage;

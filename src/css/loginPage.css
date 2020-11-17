@@ -15,8 +15,6 @@
 .card{
     color: rebeccapurple;
     margin-right: 10%;
-
-    
 }
 .h1{
     color: rgb(5, 1, 252);
@@ -33,5 +31,11 @@
     padding-bottom: 2%;
     align-content: flex-start;
 }
-
+.gutter-box {
+    padding: 8px 0;
+    background: #00a0e9;
+  }
+  [data-theme="dark"] .gutter-box {
+    background: #c5c2c3;
+  }
 

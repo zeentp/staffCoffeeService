@@ -5,22 +5,35 @@ import OrderImg from './img/buyButton.png';
 import salesPage from './img/sellButton.png';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import firebase, { auth, provider } from './firebase.js';
-import { Row, Col, Card, PageHeader } from 'antd';
+import { Row, Col, Card, PageHeader,Statistic, Button, Checkbox,Layout, Menu, Breadcrumb, Table} from 'antd';
 const { Meta } = Card;
 const db = firebase.firestore();
+const { Header, Content, Footer } = Layout;
 class homePage extends React.Component {
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            userr: "",
-
-        }
+    componentDidMount() {
+        console.log(this.props.name)
     }
 
     render() {
         return (
             <div>
+                <Layout className="layout">
+                <Header>
+                    <div className="logo" />
+                    <div className="user" />
+                    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['8']}>
+                    </Menu>
+
+                </Header>
+                <Content style={{ padding: '0 50px' }}>
+                    <Breadcrumb style={{ margin: '16px 0' }}>
+                        <Breadcrumb.Item>Home</Breadcrumb.Item>
+                        <Breadcrumb.Item>List</Breadcrumb.Item>
+                        <Breadcrumb.Item>App</Breadcrumb.Item>
+                    </Breadcrumb>
+                    {/* <div className="site-layout-content">Content</div> */}
+                </Content>
+                <Footer style={{ textAlign: 'center', position: 'fixed', left: 0, bottom: 0, width: "100%" }}>Ant Design ©2018 Created by Ant UED</Footer>
                 <PageHeader
                     className="site-page-header"
                     onBack={(loginPage) => null}
@@ -53,6 +66,7 @@ class homePage extends React.Component {
                         </Col>
                     </Row>
                 </PageHeader>
+                </Layout>
 
             </div>
         );
