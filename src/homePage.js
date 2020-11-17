@@ -11,6 +11,8 @@ const db = firebase.firestore();
 class homePage extends React.Component {
     componentDidMount() {
         console.log(this.props.name)
+        console.log(this.props.location.state.username)
+        console.log(this.props.location.state.id)
     }
 
     render() {
@@ -39,7 +41,7 @@ class homePage extends React.Component {
                             </div>
                     </Col>
                         <Col span={16}>
-                
+
                                 <Card title="Menu" className="body  ">
                                 <Link to="/SalesPage" ><img src={salesPage} className="center"/></Link>
                                 <Link to="/OrderPage"><img src={OrderImg} className="center"/></Link>
