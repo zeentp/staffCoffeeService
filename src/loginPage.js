@@ -17,6 +17,14 @@ class loginPage extends React.Component {
       role: "",
     }
   }
+  componentWillMount() {
+    const loginStatus = localStorage.getItem('loginStatus') === 'true';
+    const name = loginStatus ? localStorage.getItem('name') : '';
+    const role = loginStatus ? localStorage.getItem('role') : '';
+    this.setState({loginStatus,name,role}); 
+    console.log(loginStatus)
+}
+
 
   onFinish = async (values) => {
     let id = [];
@@ -55,12 +63,16 @@ class loginPage extends React.Component {
 
   }
   render() {
-    if (this.state.loginStatus) {  // ส่งค่า
-      return <Redirect to={{      //
-        pathname: '/HomePage',   // ผ่าน path
-        state: { name: this.state.name , role : this.state.role}
-      }} />
-    }
+    // if (this.state.loginStatus) {  // ส่งค่า
+    //   return <Redirect to={{      //
+    //     pathname: '/HomePage',   // ผ่าน path
+    //     state: { name: this.state.name , role : this.state.role}
+    //   }} />
+    // }
+    if (this.state.loginStatus === true) {
+      console.log('check')
+      this.props.history.push("/HomePage")
+  }
     return (
 
       <div class="bg">
