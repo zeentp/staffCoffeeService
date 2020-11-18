@@ -7,29 +7,29 @@ import { Link } from 'react-router-dom';
 const db = firebase.firestore();
 
 const onFinish = (values) => {
-  let user = [];
-  let password = [];
-  let login = [];
-  console.log('username:', values.username);
-  console.log('password:', values.password);
-  db.collection('user').get().then(function (querySnapshot) {
-    querySnapshot.forEach(function (doc) {
-      console.log(doc.id, " => ", doc.data().username);
-      console.log(doc.id, " => ", doc.data().password);
-      user.push(doc.data().username);
-      password.push(doc.data().password);
-    });
-  }).then
-  var i;
-  for (i = 0; user.length; i++) {
-    if (values.username == user[i]) {
-      if (values.password == password[i]) {
-        login.push(values.username)
-        login.push(values.password)
+  // let user = [];
+  // let password = [];
+  // let login = [];
+  // console.log('username:', values.username);
+  // console.log('password:', values.password);
+  // db.collection('user').get().then(function (querySnapshot) {
+  //   querySnapshot.forEach(function (doc) {
+  //     console.log(doc.id, " => ", doc.data().username);
+  //     console.log(doc.id, " => ", doc.data().password);
+  //     user.push(doc.data().username);
+  //     password.push(doc.data().password);
+  //   });
+  // }).then
+  // var i;
+  // for (i = 0; user.length; i++) {
+  //   if (values.username == user[i]) {
+  //     if (values.password == password[i]) {
+  //       login.push(values.username)
+  //       login.push(values.password)
 
-      }
-    }
-  }
+  //     }
+  //   }
+  // }
 };
 
 const onFinishFailed = (errorInfo) => {
@@ -42,12 +42,6 @@ class loginPage extends React.Component {
       data: [],
 
     }
-  }
-  onSubmit = () => {
-    this.setState({
-      data: login,
-    });
-
   }
   render() {
     return (
@@ -81,7 +75,7 @@ class loginPage extends React.Component {
               <Input.Password />
             </Form.Item>
             <Form.Item >
-              <Button type="primary" htmlType="submit" onClick={this.onSubmit} >
+              <Button type="primary" htmlType="submit"  >
                 Submit
           </Button>
             </Form.Item>

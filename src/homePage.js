@@ -42,7 +42,6 @@ class homePage extends React.Component {
                         </Col>
                     </Row>
                 </PageHeader>
-
             </div>
         );
     }
