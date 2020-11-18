@@ -38,4 +38,8 @@
   [data-theme="dark"] .gutter-box {
     background: #c5c2c3;
   }
+.logout-button{
+    margin-bottom: 10%;
+    size: 80%;
+}
 

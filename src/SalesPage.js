@@ -1,11 +1,10 @@
-// import React, { Component }from 'react';
 import 'antd/dist/antd.css';
-import React, { useState } from 'react';
+import React, { useState, Component } from 'react';
 // import OrderImg from './img/buyButton.png';
 // import salesPage from './img/sellButton.png';
-// import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Redirect, Link } from 'react-router-dom';
 // import firebase, { auth, provider } from './firebase.js';
-import { Space, Card, Layout, Menu, Breadcrumb, Select, TimePicker, DatePicker, Row, Divider, List, Collapse, Col, Avatar, Drawer } from 'antd';
+import { Space, Card, Layout, Menu, Breadcrumb, Select,Button, DatePicker, Row, Divider, List, Collapse, Col, Avatar, Drawer } from 'antd';
 // import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 // import { getKeyThenIncreaseKey } from 'antd/lib/message';
 const { Meta } = Card;
@@ -22,51 +21,42 @@ const { Panel } = Collapse;
 function callback(key) {
     console.log(key);
 }
-const data = [
-    {
-        key: 0,
-        name: '2018-02-11',
-        amount: 120,
-        type: 'hot',
-        note: 'transfer',
-    },
-    {
-        key: 1,
-        name: '2018-03-11',
-        amount: 243,
-        type: 'hot',
-        note: 'transfer',
-    },
-    {
-        key: 2,
-        name: '2018-04-11',
-        amount: 98,
-        type: 'freppe',
-        note: 'transfer',
-    },
-];
 
 function onChange(date, dateString) {
     console.log(date, dateString);
 }
 class SalesPage extends React.Component {
-    state = { visible: false };
+    constructor(props) {
+        super(props)
+        this.state = {
+          loginStatus: false,
+          visible: false 
+        }
+      }
+
     showDrawer = () => {
         this.setState({
             visible: true,
         });
     };
+    onLogout = () => {
+        this.setState({ loginStatus: false })
 
+    }
     onClose = () => {
         this.setState({
             visible: false,
         });
     }
     render() {
-
+        if (this.state.loginStatus !==true) {
+            console.log('check')
+            return <Link to="/" ></Link>
+        }
         return (
             <Layout className="layout">
                 <Header>
+                <Button className="logout-button" type="primary" danger onClick={this.onLogout}> log out </Button>
                     <div className="logo" />
                     <div className="user" />
                     <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['8']}>

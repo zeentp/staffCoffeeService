@@ -85,6 +85,7 @@ class OrderPage extends React.Component {
     render() {
 
         return (
+            
             <Layout className="layout">
                 <Header>
                     <div className="logo" />
