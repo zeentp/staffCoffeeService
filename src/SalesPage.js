@@ -4,7 +4,7 @@ import React, { useState, Component } from 'react';
 // import salesPage from './img/sellButton.png';
 import { BrowserRouter as Redirect, Link } from 'react-router-dom';
 // import firebase, { auth, provider } from './firebase.js';
-import { Space, Card, Layout, Menu, Breadcrumb, Select,Button, DatePicker, Row, Divider, List, Collapse, Col, Avatar, Drawer } from 'antd';
+import { Space, Card, Layout, Menu, Breadcrumb, Select, Button, DatePicker, Row, Divider, List, Collapse, Col, Avatar, Drawer } from 'antd';
 // import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 // import { getKeyThenIncreaseKey } from 'antd/lib/message';
 const { Meta } = Card;
@@ -29,36 +29,49 @@ class SalesPage extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-          loginStatus: false,
-          visible: false 
+            loginStatus: false,
+            name:"",
+            role:"",
+            visible: false
         }
-      }
+    }
+
+    componentWillMount() {
+        const loginStatus = localStorage.getItem('loginStatus') === 'true';
+        const name = loginStatus ? localStorage.getItem('name') : '';
+        const role = loginStatus ? localStorage.getItem('role') : '';
+        this.setState({loginStatus,name,role}); 
+        console.log(loginStatus)
+
+    }
+
+    onLogout = () => {
+        localStorage.setItem('loginStatus', false);
+        this.setState({ loginStatus: false })
+    }
 
     showDrawer = () => {
         this.setState({
             visible: true,
         });
     };
-    onLogout = () => {
-        this.setState({ loginStatus: false })
-
-    }
+  
     onClose = () => {
         this.setState({
             visible: false,
         });
     }
     render() {
-        if (this.state.loginStatus !==true) {
-            console.log('check4')
-            return <Redirect to={{
-                pathname: '/'
-            }} />
+        if (this.state.loginStatus !== true) {
+            console.log('check')
+            this.props.history.push("/")
         }
         return (
             <Layout className="layout">
                 <Header>
-                <Button className="logout-button" type="primary" danger onClick={this.onLogout}> log out </Button>
+               
+                    <Button className="logout-button" type="primary" danger onClick={this.onLogout}> log out </Button>
+ 
                     <div className="logo" />
                     <div className="user" />
                     <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['8']}>
@@ -75,69 +88,69 @@ class SalesPage extends React.Component {
                     </Space>
                     {/* <Collapse defaultActiveKey={['1']} onChange={callback}>
                         <Panel header="This is panel header 2" key="2"> */}
-                            <List
-                                dataSource={[
-                                    {
-                                        name: 'fang',
-                                    },
-                                    {
-                                        name: 'Lily',
-                                    },
-                                ]}
-                                bordered
-                                renderItem={item => (
-                                    <List.Item
-                                        key={item.id}
-                                        actions={[
-                                            <a onClick={this.showDrawer} key={`a-${item.id}`}>
-                                                Detail
+                    <List
+                        dataSource={[
+                            {
+                                name: 'fang',
+                            },
+                            {
+                                name: 'Lily',
+                            },
+                        ]}
+                        bordered
+                        renderItem={item => (
+                            <List.Item
+                                key={item.id}
+                                actions={[
+                                    <a onClick={this.showDrawer} key={`a-${item.id}`}>
+                                        Detail
                 </a>,
-                                        ]}
-                                    >
-                                        <List.Item.Meta
-                                            avatar={
-                                                <Avatar src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png" />
-                                            }
-                                            title={<a href="https://ant.design/index-cn">{item.name}</a>}
-                                            description="Progresser XTech"
-                                        />
-                                    </List.Item>
-                                )}
-                            />
-                            <Drawer
-                                width={640}
-                                placement="right"
-                                closable={false}
-                                onClose={this.onClose}
-                                visible={this.state.visible}
+                                ]}
                             >
-                                <p className="site-description-item-profile-p" style={{ marginBottom: 24 }}>
-                                    User Profile
+                                <List.Item.Meta
+                                    avatar={
+                                        <Avatar src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png" />
+                                    }
+                                    title={<a href="https://ant.design/index-cn">{item.name}</a>}
+                                    description="Progresser XTech"
+                                />
+                            </List.Item>
+                        )}
+                    />
+                    <Drawer
+                        width={640}
+                        placement="right"
+                        closable={false}
+                        onClose={this.onClose}
+                        visible={this.state.visible}
+                    >
+                        <p className="site-description-item-profile-p" style={{ marginBottom: 24 }}>
+                            User Profile
           </p>
-                                <p className="site-description-item-profile-p">Personal</p>
+                        <p className="site-description-item-profile-p">Personal</p>
 
-                                <Divider />
-                                <p className="site-description-item-profile-p">Company</p>
-                                <Row>
-                                    <Col span={12}>
-                                        <DescriptionItem title="Position" content="Programmer" />
-                                    </Col>
-                                </Row>
-                                <Divider />
-                                <p className="site-description-item-profile-p">Contacts</p>
-                                <Row>
-                                    <Col span={24}>
-                                        <DescriptionItem
-                                            title="Github"
-                                            content={
-                                                <a href="http://github.com/ant-design/ant-design/">
-                                                    github.com/ant-design/ant-design/
+                        <Divider />
+                        <p className="site-description-item-profile-p">Company</p>
+                        <Row>
+                            <Col span={12}>
+                                <DescriptionItem title="Position" content="Programmer" />
+                            </Col>
+                        </Row>
+                        <Divider />
+                        <p className="site-description-item-profile-p">Contacts</p>
+                        <Row>
+                            <Col span={24}>
+                                <DescriptionItem
+                                    title="Github"
+                                    content={
+                                        <a href="http://github.com/ant-design/ant-design/">
+                                            github.com/ant-design/ant-design/
                   </a>
-                                            }
-                                        />
-                                    </Col>
-                                </Row>
-                            </Drawer>
+                                    }
+                                />
+                            </Col>
+                        </Row>
+                    </Drawer>
                 </Content>
                 <Footer style={{ textAlign: 'center', position: 'fixed', left: 0, bottom: 0, width: "100%" }}>Ant Design ©2018 Created by Ant UED</Footer>
             </Layout>
