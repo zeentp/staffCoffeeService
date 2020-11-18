@@ -5,13 +5,38 @@ import OrderImg from './img/buyButton.png';
 import salesPage from './img/sellButton.png';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import firebase, { auth, provider } from './firebase.js';
-import { Statistic, Button, Card, Modal, Layout, Menu, Breadcrumb, Table, Tabs, Row, Col, InputNumber } from 'antd';
+import { Statistic, Button, Card, Modal, Layout, Menu, Breadcrumb, Table, Tabs, Row, Col, InputNumber,Divider } from 'antd';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { getKeyThenIncreaseKey } from 'antd/lib/message';
 const { Meta } = Card;
 const { TabPane } = Tabs;
-const { Header, Content, Footer } = Layout;
 const db = firebase.firestore();
+const { Header, Content, Footer } = Layout;
+const style = { background: '#0092ff', padding: '8px 0' };
+const data = [
+    
+    {
+        key: 0,
+        name: '2018-02-11',
+        amount: 120,
+        type: 'hot',
+        note: 'transfer',
+    },
+    {
+        key: 1,
+        name: '2018-03-11',
+        amount: 243,
+        type: 'hot',
+        note: 'transfer',
+    },
+    {
+        key: 2,
+        name: '2018-04-11',
+        amount: 98,
+        type: 'freppe',
+        note: 'transfer',
+    },
+];
 class OrderPage extends React.Component {
     state = {
         allData: [],
@@ -144,6 +169,7 @@ class OrderPage extends React.Component {
             return (<div> {component}</div>)
         })
         return (
+            
             <Layout className="layout">
                 <Header>
                     <div className="logo" />
@@ -178,6 +204,41 @@ class OrderPage extends React.Component {
                             </Row>
                         </Col>
                     </Row>
+                    <Table pagination={false} className="table" columns={this.state.columns} dataSource={data} />
+                    <Button.Group>
+                        <Button onClick={this.decline} icon={<MinusOutlined />} />
+                        <Statistic value={this.state.percent} />
+                        <Button onClick={this.increase} icon={<PlusOutlined />} />
+                    </Button.Group>
+
+                    <Divider orientation="left">Coffee Menu</Divider>
+                    <Row gutter={{ xs: 16, sm: 16, md: 24, lg: 32 }}>
+                        <Col className="gutter-box" span={6}>
+                            <div style={style}>Latte</div>
+                        </Col>
+                        <Col className="gutter-box" span={6}>
+                            <div style={style}>col-6</div>
+                        </Col>
+                        <Col className="gutter-box" span={6}>
+                            <div style={style}>col-6</div>
+                        </Col>
+                        <Col className="gutter-box" span={6}>
+                            <div style={style}>col-6</div>
+                        </Col>
+                        <Col className="gutter-box" span={6}>
+                            <div style={style}>col-6</div>
+                        </Col>
+                        <Col className="gutter-box" span={6}>
+                            <div style={style}>col-6</div>
+                        </Col>
+                        <Col className="gutter-box" span={6}>
+                            <div style={style}>col-6</div>
+                        </Col>
+                        <Col className="gutter-box" span={6}>
+                            <div style={style}>col-6</div>
+                        </Col>
+                    </Row>
+
                 </Content>
                 <Footer style={{ textAlign: 'center', position: 'fixed', left: 0, bottom: 0, width: "100%" }}>Ant Design ©2018 Created by Ant UED</Footer>
             </Layout>

@@ -6,13 +6,15 @@ import OrderPage from './OrderPage.js';
 import SalesPage from './SalesPage.js';
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import loginPage from './loginPage.js';
+import homePage from './homePage.js';
 
 class App extends React.Component {
   render() {
     return (
       <Router>
         <Switch>
-          <Route exact path='/' component={OrderPage} />
+          <Route exact path='/' component={LoginPage} />
           <Route path='/HomePage' component={HomePage} />
           <Route path='/OrderPage' component={OrderPage} />
           <Route path='/SalesPage' component={SalesPage} />
