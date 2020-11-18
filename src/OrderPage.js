@@ -5,7 +5,7 @@ import OrderImg from './img/buyButton.png';
 import salesPage from './img/sellButton.png';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import firebase, { auth, provider } from './firebase.js';
-import { Statistic, Button, Card, Modal, Layout, Menu, Breadcrumb, Table, Tabs, Row, Col, InputNumber,Divider } from 'antd';
+import { Statistic, Button, Card, Modal, Layout, Menu, Breadcrumb, Table, Tabs, Row, Col, InputNumber, Divider } from 'antd';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { getKeyThenIncreaseKey } from 'antd/lib/message';
 const { Meta } = Card;
@@ -14,7 +14,7 @@ const db = firebase.firestore();
 const { Header, Content, Footer } = Layout;
 const style = { background: '#0092ff', padding: '8px 0' };
 const data = [
-    
+
     {
         key: 0,
         name: '2018-02-11',
@@ -58,7 +58,7 @@ class OrderPage extends React.Component {
                 dataIndex: 'unit',
                 width: 100,
                 render: (record) =>
-                    <InputNumber size="small" min={1} max={100000} defaultValue={1}  onChange={() => this.onChange(record.key)} />
+                    <InputNumber size="small" min={1} max={100000} defaultValue={1} onChange={() => this.onChange(record.key)} />
             },
             {
                 title: 'Units Price',
@@ -72,6 +72,9 @@ class OrderPage extends React.Component {
             },
 
         ],
+        loginStatus: false,
+        name: "",
+        role: "",
     };
     componentDidMount() {
         let wholedata = [];
@@ -86,6 +89,19 @@ class OrderPage extends React.Component {
                 this.setState({ allData: wholedata })
             })
     }
+    componentWillMount() {
+        const loginStatus = localStorage.getItem('loginStatus') === 'true';
+        const name = loginStatus ? localStorage.getItem('name') : '';
+        const role = loginStatus ? localStorage.getItem('role') : '';
+        this.setState({ loginStatus, name, role });
+        console.log(loginStatus)
+
+    }
+
+    onLogout = () => {
+        localStorage.setItem('loginStatus', false);
+        this.setState({ loginStatus: false })
+    }
     increase = () => {
         let percent = this.state.percent + 1;
         if (percent > 100) {
@@ -93,10 +109,10 @@ class OrderPage extends React.Component {
         }
         this.setState({ percent });
     };
-    onChange= (key)=> {
+    onChange = (key) => {
         // console.log('changed', value);
         console.log('f', key);
-        
+
     }
 
     onAccept = (id, name, price, type) => {
@@ -141,6 +157,10 @@ class OrderPage extends React.Component {
         this.setState({ percent });
     };
     render() {
+        if (this.state.loginStatus !== true) {
+            console.log('check')
+            this.props.history.push("/")
+        }
         const listOfItem = this.state.allData.map((item) => {
             var id = item[0]
             var name = item[1].name
@@ -169,9 +189,10 @@ class OrderPage extends React.Component {
             return (<div> {component}</div>)
         })
         return (
-            
+
             <Layout className="layout">
                 <Header>
+                    <Button className="logout-button" type="primary" danger onClick={this.onLogout}> log out </Button>
                     <div className="logo" />
                     <div className="user" />
                     <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['8']}>

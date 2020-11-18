@@ -38,7 +38,9 @@ class loginPage extends React.Component {
     });
 
     if (status === 1) {
-      this.setState({ name: name, role: role })
+      localStorage.setItem('loginStatus', true);
+      localStorage.setItem('name',name);
+      localStorage.setItem('role',role);
       this.setState({ loginStatus: true })
     }
 
