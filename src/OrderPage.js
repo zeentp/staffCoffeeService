@@ -26,18 +26,24 @@ class OrderPage extends React.Component {
             {
                 title: 'Type',
                 dataIndex: 'type',
+                key: 'type',
                 width: 100,
             },
             {
                 title: 'Units',
                 dataIndex: 'unit',
                 width: 100,
-                render: (record) =>
+                render: (text, record) => (
+
                     <Button.Group>
-                    <Button onClick={this.decline} icon={<MinusOutlined />} />
-                    <Statistic value={this.state.percent} />
-                    <Button onClick={this.increase} icon={<PlusOutlined />} />
-                </Button.Group>
+                        <Button onClick={() => this.decline(record.key)} icon={<MinusOutlined />} />
+                        <Statistic value={this.state.orders[this.state.orders.findIndex(x => x.key == record.key)].quantity} />
+                        <Button onClick={() => this.increase(record.key)} icon={<PlusOutlined />} />
+                    </Button.Group>
+
+
+
+                )
             },
             {
                 title: 'Units Price',
@@ -48,6 +54,9 @@ class OrderPage extends React.Component {
                 title: 'Amount',
                 dataIndex: 'amount',
                 width: 100,
+                render: (text, record) => (
+                    <a>{this.state.orders[this.state.orders.findIndex(x => x.key == record.key)].quantity * record.unitPrice}</a>
+                )
             },
 
         ],
@@ -65,29 +74,40 @@ class OrderPage extends React.Component {
                 this.setState({ allData: wholedata })
             })
     }
-    increase = () => {
-        let percent = this.state.percent + 1;
-        if (percent > 100) {
-            percent = 100;
+    increase = (key) => {
+        let orders = [...this.state.orders];
+        orders[orders.findIndex(x => x.key == key)].quantity = orders[orders.findIndex(x => x.key == key)].quantity + 1
+        if (orders[orders.findIndex(x => x.key == key)].quantity > 100) {
+            orders[orders.findIndex(x => x.key == key)].quantity = 100;
         }
-        this.setState({ percent });
+        this.setState({ orders });
+        console.log(this.state.orders)
     };
-    onChange= (key)=> {
+    onChange = (key) => {
         // console.log('changed', value);
         console.log('f', key);
-        
+
     }
 
     onAccept = (id, name, price, type) => {
-
-        let data = {
-            key: id,
-            description: name,
-            unitPrice: price,
-            type: type,
+        if (this.state.orders.findIndex(x => x.key == id) == -1) {
+            let data = {
+                key: id,
+                description: name,
+                unitPrice: price,
+                quantity: 1,
+                type: type,
+            }
+            const list = this.state.orders.concat(data);
+            this.setState({ orders: list })
         }
-        const list = this.state.orders.concat(data);
-        this.setState({ orders: list })
+        else {
+            console.log(id)
+            console.log(this.state.orders[this.state.orders.findIndex(x => x.key == id)].quantity)
+            let orders = [...this.state.orders];
+            orders[orders.findIndex(x => x.key == id)].quantity = orders[orders.findIndex(x => x.key == id)].quantity + 1
+            this.setState({ orders })
+        }
     }
     confirm = (id, name, price, type) => {
         // console.log(id)
@@ -112,12 +132,15 @@ class OrderPage extends React.Component {
                 this.setState({ allData: wholedata })
             })
     }
-    decline = () => {
-        let percent = this.state.percent - 1;
-        if (percent < 0) {
-            percent = 0;
+    decline = (key) => {
+        console.log(key)
+        let orders = [...this.state.orders];
+        orders[orders.findIndex(x => x.key == key)].quantity = orders[orders.findIndex(x => x.key == key)].quantity - 1
+        if (orders[orders.findIndex(x => x.key == key)].quantity < 1) {
+            orders[orders.findIndex(x => x.key == key)].quantity = 1;
         }
-        this.setState({ percent });
+        this.setState({ orders });
+        console.log(this.state.orders)
     };
     render() {
         const listOfItem = this.state.allData.map((item) => {
@@ -166,7 +189,7 @@ class OrderPage extends React.Component {
                     <Row className="site-layout-content">
                         <Col span={8}>
                             <Row>
-                                <Table pagination={false} className="table" columns={this.state.columns} dataSource={this.state.orders} />
+                                <Table pagination={false} className="table" columns={this.state.columns} dataSource={this.state.orders} rowKey={record => record.key} />
                             </Row>
                             <Row> </Row>
                         </Col>
