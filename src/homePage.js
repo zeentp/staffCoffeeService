@@ -34,12 +34,6 @@ class homePage extends React.Component {
                     {/* <div className="site-layout-content">Content</div> */}
                 </Content>
                 <Footer style={{ textAlign: 'center', position: 'fixed', left: 0, bottom: 0, width: "100%" }}>Ant Design ©2018 Created by Ant UED</Footer>
-                <PageHeader
-                    className="site-page-header"
-                    onBack={(loginPage) => null}
-                    title="Coffee Shop"
-                    subTitle="Home Page"
-                >
                     <Row gutter={[16, 16]}>
 
 
@@ -62,12 +56,9 @@ class homePage extends React.Component {
                                 <Link to="/SalesPage" ><img src={salesPage} className="center"/></Link>
                                 <Link to="/OrderPage"><img src={OrderImg} className="center"/></Link>
                                 </Card>
-
                         </Col>
                     </Row>
-                </PageHeader>
                 </Layout>
-
             </div>
         );
     }
