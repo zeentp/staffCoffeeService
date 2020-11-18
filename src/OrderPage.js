@@ -55,7 +55,7 @@ class OrderPage extends React.Component {
                 dataIndex: 'amount',
                 width: 100,
                 render: (text, record) => (
-                <a>{this.state.orders[this.state.orders.findIndex(x => x.key == record.key)].quantity*record.unitPrice}</a>
+                    <a>{this.state.orders[this.state.orders.findIndex(x => x.key == record.key)].quantity * record.unitPrice}</a>
                 )
             },
 
@@ -90,16 +90,24 @@ class OrderPage extends React.Component {
     }
 
     onAccept = (id, name, price, type) => {
-
-        let data = {
-            key: id,
-            description: name,
-            unitPrice: price,
-            quantity: 1,
-            type: type,
+        if (this.state.orders.findIndex(x => x.key == id) == -1) {
+            let data = {
+                key: id,
+                description: name,
+                unitPrice: price,
+                quantity: 1,
+                type: type,
+            }
+            const list = this.state.orders.concat(data);
+            this.setState({ orders: list })
         }
-        const list = this.state.orders.concat(data);
-        this.setState({ orders: list })
+        else {
+            console.log(id)
+            console.log(this.state.orders[this.state.orders.findIndex(x => x.key == id)].quantity)
+            let orders = [...this.state.orders];
+            orders[orders.findIndex(x => x.key == id)].quantity = orders[orders.findIndex(x => x.key == id)].quantity + 1
+            this.setState({ orders })
+        }
     }
     confirm = (id, name, price, type) => {
         // console.log(id)
