@@ -62,7 +62,7 @@ class homePage extends React.Component {
                 <Row gutter={[16, 16]}>
                     <Col span={8}>
                         <div className="info">
-                            <Card title="Information" className="card" style={{width:300}}>
+                            <Card hoverable title="Information" className="card" style={{width:300}}>
                                 <h1> Name: {this.state.name} </h1>
                                 <h1> Role: {this.state.role}</h1>
                             </Card>

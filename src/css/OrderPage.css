@@ -28,3 +28,14 @@
 .table{
     width: 560px;
 }
+.listOrder{
+  width: 500px;
+  height: 100%;
+  overflow: scroll;
+  height: 600px;
+
+}
+.catTab{
+  padding-left: 50px;
+  height: 600px;
+}

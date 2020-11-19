@@ -100,7 +100,6 @@ class OrderPage extends React.Component {
         const role = loginStatus ? localStorage.getItem('role') : '';
         this.setState({ loginStatus, name, role });
         console.log(loginStatus)
-
     }
 
     onLogout = () => {
@@ -204,7 +203,7 @@ class OrderPage extends React.Component {
             var img = item[1].img
             var component = (
                 <Col><Card onClick={() => this.confirm(id, name, price, type)}
-                    style={{ width: 225,height:500 }}
+                    style={{ width: 225,height: 445,marginLeft:50 }}
                     hoverable={true}
                     cover={
                         <img
@@ -213,16 +212,12 @@ class OrderPage extends React.Component {
                         />
                     }
                 >
-                     <Card style={{textAlign:"left",width:174,height:150,marginRight:80}} title={name} bordered={false}>
+                     <Card style={{textAlign:"left",width:174,height:125}} title={name} bordered={false}>
                          <h1 className="formatB">
          price: {price}<br />
          type: {type}
          </h1>
         </Card>
-                    {/* <Meta
-                        title={name}
-                        description={type}
-                    /> */}
                 </Card></Col>
 
             )
@@ -238,7 +233,7 @@ class OrderPage extends React.Component {
                     <div className="user" />
                     {/* <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['8']}>
                     </Menu> */}
-
+                    {/* this.state.name */}
                 </Header>
                 <Content style={{ padding: '0 50px' }}>
                     <Breadcrumb style={{ margin: '16px 0' }}>
@@ -247,16 +242,16 @@ class OrderPage extends React.Component {
                         <Breadcrumb.Item>App</Breadcrumb.Item>
                     </Breadcrumb>
                     {/* <div className="site-layout-content">Content</div> */}
-                    <Row className="site-layout-content">
+                    <Row style={{width:1440}} className="site-layout-content">
                         <Col span={8}>
                             <Row>
                                 <Table pagination={false} className="table" columns={this.state.columns} dataSource={this.state.orders} rowKey={record => record.key} />
                             </Row>
                             <Row> </Row>
                         </Col>
-                        <Col span={16} style={{ backgroundColor: "rgb(255, 255, 255, 0.3)" }}>
+                        <Col span={16} style={{ backgroundColor: "rgb(255, 255, 255, 0.3)" }}className="catTab">
                             <Row>
-                                <Tabs defaultActiveKey="1" onChange={this.callback} >
+                                <Tabs style={{marginLeft:50}} defaultActiveKey="1" onChange={this.callback} >
                                 <   TabPane tab="All" key="all"></TabPane>
                                     <TabPane tab="Coffee" key="coffee"></TabPane>
                                     <TabPane tab="Non-Coffee" key="non-coffee"></TabPane>
@@ -269,7 +264,7 @@ class OrderPage extends React.Component {
                     </Row>
 
                 </Content>
-                <Footer style={{ textAlign: 'center', position: 'fixed', left: 0, bottom: 0, width: "100%" }}>Get up early. Stay up late.</Footer>
+                <Footer style={{ textAlign: 'center', position: 'fixed', left: 0, bottom: 0, width: "100%" }}></Footer>
             </Layout>
         );
     }
