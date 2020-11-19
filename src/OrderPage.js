@@ -32,13 +32,15 @@ class OrderPage extends React.Component {
             {
                 title: 'Units',
                 dataIndex: 'unit',
-                width: 100,
+                width: 200,
+                align: 'center',
                 render: (text, record) => (
 
                     <Button.Group>
-                        <Button onClick={() => this.decline(record.key)} icon={<MinusOutlined />} />
-                        <Statistic value={this.state.orders[this.state.orders.findIndex(x => x.key == record.key)].quantity} />
-                        <Button onClick={() => this.increase(record.key)} icon={<PlusOutlined />} />
+                        <Button style={{width:27,height:27}} onClick={() => this.decline(record.key)} icon={<MinusOutlined />} />
+                        {/* <div  style={{textAlign:"center",width:35}}value= /> */}
+                        <a className="formatA" style={{width:35,textAlign:"center"}}>{this.state.orders[this.state.orders.findIndex(x => x.key == record.key)].quantity}</a>
+                        <Button style={{width:27,height:27}} onClick={() => this.increase(record.key)} icon={<PlusOutlined />} />
                     </Button.Group>
 
 
@@ -146,9 +148,9 @@ class OrderPage extends React.Component {
         Modal.confirm({
             onOk: () => this.onAccept(id, name, price, type),
             title: 'Confirm',
-            content: 'Bla bla ...',
-            okText: 'yes',
-            cancelText: 'no',
+            content: 'Are you sure ?',
+            cancelText: 'NO',
+            okText: 'YES',
         });
     }
     callback = (key) => {
@@ -202,7 +204,7 @@ class OrderPage extends React.Component {
             var img = item[1].img
             var component = (
                 <Col><Card onClick={() => this.confirm(id, name, price, type)}
-                    style={{ width: 200 }}
+                    style={{ width: 225,height:500 }}
                     hoverable={true}
                     cover={
                         <img
@@ -211,10 +213,16 @@ class OrderPage extends React.Component {
                         />
                     }
                 >
-                    <Meta
+                     <Card style={{textAlign:"left",width:174,height:150,marginRight:80}} title={name} bordered={false}>
+                         <h1 className="formatB">
+         price: {price}<br />
+         type: {type}
+         </h1>
+        </Card>
+                    {/* <Meta
                         title={name}
                         description={type}
-                    />
+                    /> */}
                 </Card></Col>
 
             )
@@ -261,7 +269,7 @@ class OrderPage extends React.Component {
                     </Row>
 
                 </Content>
-                <Footer style={{ textAlign: 'center', position: 'fixed', left: 0, bottom: 0, width: "100%" }}>Ant Design ©2018 Created by Ant UED</Footer>
+                <Footer style={{ textAlign: 'center', position: 'fixed', left: 0, bottom: 0, width: "100%" }}>Get up early. Stay up late.</Footer>
             </Layout>
         );
     }

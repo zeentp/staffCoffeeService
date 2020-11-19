@@ -2,34 +2,21 @@ import React, { Component } from 'react';
 import 'antd/dist/antd.css';
 import './css/loginPage.css';
 import firebase from './firebase.js';
-import { Form, Input, Button, Checkbox, Card } from 'antd';
+import { Form, Input, Button, Checkbox, Card,message,Space } from 'antd';
 import { Redirect } from 'react-router-dom';
 const db = firebase.firestore();
+const success = () => {
+  message.success('This is a success message');
+};
 
+const error = () => {
+  message.error('This is an error message');
+};
+
+const warning = () => {
+  message.warning('This is a warning message');
+};
 const onFinish = (values) => {
-  // let user = [];
-  // let password = [];
-  // let login = [];
-  // console.log('username:', values.username);
-  // console.log('password:', values.password);
-  // db.collection('user').get().then(function (querySnapshot) {
-  //   querySnapshot.forEach(function (doc) {
-  //     console.log(doc.id, " => ", doc.data().username);
-  //     console.log(doc.id, " => ", doc.data().password);
-  //     user.push(doc.data().username);
-  //     password.push(doc.data().password);
-  //   });
-  // }).then
-  // var i;
-  // for (i = 0; user.length; i++) {
-  //   if (values.username == user[i]) {
-  //     if (values.password == password[i]) {
-  //       login.push(values.username)
-  //       login.push(values.password)
-
-  //     }
-  //   }
-  // }
 };
 
 const onFinishFailed = (errorInfo) => {
@@ -78,13 +65,17 @@ class loginPage extends React.Component {
       localStorage.setItem('name',name);
       localStorage.setItem('role',role);
       this.setState({ loginStatus: true })
+      
+    }
+    if (status===0) {
+      return (message.error('Your username or password may be incorrect!'))
     }
 
 
   };
 
   onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    message.warning('Please input your username or password!');
   };
 
   onSubmit = () => {
@@ -100,9 +91,10 @@ class loginPage extends React.Component {
     if (this.state.loginStatus === true) {
       console.log('check')
       this.props.history.push("/HomePage")
-  }
+    }
+ 
     return (
-
+      
       <div class="bg">
         <Card title="Coffee Shop" style={{ width: 500 }} class="body">
           <Form
@@ -119,7 +111,6 @@ class loginPage extends React.Component {
             >
               <Input />
             </Form.Item>
-
             <Form.Item
               label="Password"
               name="password"

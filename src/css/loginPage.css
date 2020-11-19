@@ -20,6 +20,9 @@
     color: rgb(5, 1, 252);
     font-size: 80;
     display: flex;
+    font-family: Tahoma;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
 }
 .center{
     left: 0 px;
@@ -49,4 +52,17 @@
     text-indent: 20px;
     word-spacing: 10px;
     font-family: Tahoma;
+}
+.formatA{
+    color: #19df2a;
+    font-family: Tahoma;
+    font-size: large;
+}
+.formatB{
+    color: grey;
+    text-align: center;
+    font-size: medium;
+    margin-right: 30%;
+    display: flex;
+
 }
