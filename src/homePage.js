@@ -5,7 +5,7 @@ import OrderImg from './img/buyButton.png';
 import salesPage from './img/sellButton.png';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 import firebase, { auth, provider } from './firebase.js';
-import { Row, Col, Card, PageHeader,Statistic, Button, Checkbox,Layout, Menu, Breadcrumb, Table} from 'antd';
+import { Row, Col, Card, PageHeader, Statistic, Button, Checkbox, Layout, Menu, Breadcrumb, Table } from 'antd';
 const { Meta } = Card;
 const db = firebase.firestore();
 const { Header, Content, Footer } = Layout;
@@ -13,36 +13,36 @@ class homePage extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-          loginStatus: false,
-    
+            loginStatus: false,
+            name:"",
+            role:""
         }
-      }
+    }
 
     componentWillMount() {
-        console.log('check2')
-        if (typeof this.props.location.state !== 'undefined') {
-            this.setState({ loginStatus: true })
-        }
-        
+        const loginStatus = localStorage.getItem('loginStatus') === 'true';
+        const name = loginStatus ? localStorage.getItem('name') : '';
+        const role = loginStatus ? localStorage.getItem('role') : '';
+        this.setState({loginStatus,name,role}); 
+        console.log(loginStatus)
     }
 
     onLogout = () => {
+        localStorage.setItem('loginStatus', false);
         this.setState({ loginStatus: false })
     }
-    
+
     render() {
-        if (this.state.loginStatus !==true) {
+        if (this.state.loginStatus !== true) {
             console.log('check')
-            return <Redirect to={{
-                pathname: '/'
-            }} />
+            this.props.history.push("/")
         }
         return (
-            
-                <Layout className="layout">
+
+            <Layout className="layout">
                 <Header>
-                <Button className="logout-button" type="primary" danger onClick={this.onLogout}> log out </Button>
-                    <div className="logo"/>
+                    <Button className="logout-button" type="primary" danger onClick={this.onLogout}> log out </Button>
+                    <div className="logo" />
                     {/*  */}
                     <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['8']}>
                     </Menu>
@@ -59,30 +59,37 @@ class homePage extends React.Component {
                 {/* <Button type="primary" danger onClick={this.onLogout}> log out </Button> */}
                 <PageHeader
                 ></PageHeader>
-                    <Row gutter={[16, 16]}>
-                        <Col span={8}>
-                            <div>
-                                <Card title="Information" className="card"
-                                    hoverable
-                                    style={{ width: 300 }}
+                <Row gutter={[16, 16]}>
+                    <Col span={8}>
+                        <div>
+                            <Card title="Information" className="card"
+                                hoverable
+                                style={{ width: 300 }}
 
-                                >
-                                    <Meta title="Username" description={this.props.location.state.name} />
-                                    <Meta title="Role" description={this.props.location.state.role}/>
-                                </Card>
-                            </div>
-                        </Col>
-                        <Col span={16}>
-
-                            <Card title="Menu" className="body">
-                                <Link to="/SalesPage" ><img src={salesPage} className="center" /></Link>
-                                <Link to="/OrderPage"><img src={OrderImg} className="center" /></Link>
+                            >
+                                <Meta title="Username" description={this.state.name} />
+                                <Meta title="Role" description={this.state.role} />
                             </Card>
+                        </div>
+                    </Col>
+                    <Col span={16}>
 
-                        </Col>
-                    </Row>
-                </Layout>
-            
+                        <Card title="Menu" className="body">
+                            <Link to={{
+                                pathname: '/SalesPage',
+                               
+                            }}
+                            > <img src={salesPage} className="center" /></Link>
+                            <Link to={{
+                                pathname: '/OrderPage',
+                           
+                            }}><img src={OrderImg} className="center" /></Link>
+                        </Card>
+
+                    </Col>
+                </Row>
+            </Layout>
+
         );
     }
 }
