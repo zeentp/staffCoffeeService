@@ -6,7 +6,7 @@ import salesPage from './img/sellButton.png';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import firebase, { auth, provider } from './firebase.js';
 import { Statistic, Button, Card, Modal, Layout, Menu, Breadcrumb, Table, Tabs, Row, Col, InputNumber } from 'antd';
-import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import { MinusOutlined, PlusOutlined,DeleteOutlined } from '@ant-design/icons';
 import { getKeyThenIncreaseKey } from 'antd/lib/message';
 const { Meta } = Card;
 const { TabPane } = Tabs;
@@ -34,15 +34,11 @@ class OrderPage extends React.Component {
                 dataIndex: 'unit',
                 width: 100,
                 render: (text, record) => (
-
                     <Button.Group>
                         <Button onClick={() => this.decline(record.key)} icon={<MinusOutlined />} />
                         <Statistic value={this.state.orders[this.state.orders.findIndex(x => x.key == record.key)].quantity} />
                         <Button onClick={() => this.increase(record.key)} icon={<PlusOutlined />} />
                     </Button.Group>
-
-
-
                 )
             },
             {
@@ -58,9 +54,24 @@ class OrderPage extends React.Component {
                     <a>{this.state.orders[this.state.orders.findIndex(x => x.key == record.key)].quantity * record.unitPrice}</a>
                 )
             },
+            {
+                title: 'Delete',
+                dataIndex: 'delete',
+                width: 100,
+                render: (text, record) => (
+                    <DeleteOutlined onClick={() => this.handleDelete(record.key)}/> 
+                )
+            }
 
         ],
     };
+    handleDelete = (key) => {
+        const orders = [...this.state.orders];
+        this.setState({
+          orders: orders.filter((item) => item.key !== key),
+        });
+        console.log(this.state.orders);
+      };
     componentDidMount() {
         let wholedata = [];
         db.collection('menu').get()
