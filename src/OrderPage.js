@@ -5,7 +5,7 @@ import OrderImg from './img/buyButton.png';
 import salesPage from './img/sellButton.png';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import firebase, { auth, provider } from './firebase.js';
-import { Statistic, Button, Card, Modal, Layout, Menu, Breadcrumb, Table, Tabs, Row, Col, Divider } from 'antd';
+import { Statistic, Button, Card, Modal, Layout, Menu, Breadcrumb, Table, Tabs, Row, Col, Divider, message } from 'antd';
 import { MinusOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { getKeyThenIncreaseKey } from 'antd/lib/message';
 const { Meta } = Card;
@@ -39,10 +39,10 @@ class OrderPage extends React.Component {
                 render: (text, record) => (
 
                     <Button.Group>
-                        <Button style={{width:27,height:27}} onClick={() => this.decline(record)} icon={<MinusOutlined />} />
+                        <Button style={{ width: 27, height: 27 }} onClick={() => this.decline(record)} icon={<MinusOutlined />} />
                         {/* <div  style={{textAlign:"center",width:35}}value= /> */}
-                        <a className="formatA" style={{width:35,textAlign:"center"}}>{this.state.orders[this.state.orders.findIndex(x => x.key == record.key)].quantity}</a>
-                        <Button style={{width:27,height:27}} onClick={() => this.increase(record)} icon={<PlusOutlined />} />
+                        <a className="formatA" style={{ width: 35, textAlign: "center" }}>{this.state.orders[this.state.orders.findIndex(x => x.key == record.key)].quantity}</a>
+                        <Button style={{ width: 27, height: 27 }} onClick={() => this.increase(record)} icon={<PlusOutlined />} />
                     </Button.Group>
 
 
@@ -67,7 +67,7 @@ class OrderPage extends React.Component {
                 //  ellipsis: true,
                 title: 'Delete',
                 dataIndex: 'delete',
-                width:80,
+                width: 80,
                 render: (text, record) => (
                     <DeleteOutlined onClick={() => this.handleDelete(record.key)} />
                 )
@@ -93,9 +93,9 @@ class OrderPage extends React.Component {
     }
     handleDelete = (key) => {
         const orders = [...this.state.orders];
-        
+
         this.setState((state) => ({
-            total: state.total - parseInt(orders[orders.findIndex(x=>x.key === key)].quantity*orders[orders.findIndex(x=>x.key === key)].unitPrice)
+            total: state.total - parseInt(orders[orders.findIndex(x => x.key === key)].quantity * orders[orders.findIndex(x => x.key === key)].unitPrice)
         }));
         this.setState({
             orders: orders.filter((item) => item.key !== key),
@@ -170,10 +170,10 @@ class OrderPage extends React.Component {
             total: state.total + parseInt(price)
         }));
     }
-    confirm = (id, name, price, type) => {
+    confirm = () => {
         // console.log(id)
         Modal.confirm({
-            onOk: () => this.onAccept(id, name, price, type),
+            onOk: () => this.onSubmit(),
             title: 'Confirm',
             content: 'Are you sure ?',
             cancelText: 'NO',
@@ -209,33 +209,41 @@ class OrderPage extends React.Component {
 
     }
     onSubmit = () => {
-        let m = []
-        let q = []
-        const o_date = new Intl.DateTimeFormat;
-        const f_date = (m_ca, m_it) => Object({ ...m_ca, [m_it.type]: m_it.value });
-        const m_date = o_date.formatToParts().reduce(f_date, {});
-        const a = m_date.year + '-' + m_date.month + '-' + m_date.day;
-        const orders = [...this.state.orders]
-        const time = new Date().toLocaleTimeString();
-        console.log('date', this.state.date)
-        // let lst = "[]"
-        for (var i = 0; i < orders.length; i++) {
-            m.push(orders[i].key)
-            q.push(orders[i].quantity)
-            console.log(m)
+        
+        console.log('xxxxx',this.state.allData.length)
+        if (this.state.orders.length == 0) {
+            message.warning('Please select your order')
         }
+        else {
+            let m = []
+            let q = []
+            const o_date = new Intl.DateTimeFormat;
+            const f_date = (m_ca, m_it) => Object({ ...m_ca, [m_it.type]: m_it.value });
+            const m_date = o_date.formatToParts().reduce(f_date, {});
+            const a = m_date.year + '-' + m_date.month + '-' + m_date.day;
+            const orders = [...this.state.orders]
+            const time = new Date().toLocaleTimeString();
+            console.log('date', this.state.date)
+            // let lst = "[]"
+            for (var i = 0; i < orders.length; i++) {
+                m.push(orders[i].key)
+                q.push(orders[i].quantity)
+                console.log(m)
+            }
 
-        db.collection('order').add({
-            menuName: m,
-            menuQuantity : q,
-            name: this.state.name,
-            date: a,
-            time: time,
-            total: this.state.total
-        })
-            .then(docRef => {
-                console.log("add success~")
+            db.collection('order').add({
+                menuName: m,
+                menuQuantity: q,
+                name: this.state.name,
+                date: a,
+                time: time,
+                total: this.state.total
             })
+                .then(docRef => {
+                    console.log("add success~")
+                    window.location.href = "/FinishPage"
+                })   
+        }
 
     }
     decline = (record) => {
@@ -265,8 +273,9 @@ class OrderPage extends React.Component {
             var type = item[1].type
             var img = item[1].img
             var component = (
-                <Col><Card onClick={() => this.confirm(id, name, price, type)}
-                    style={{ width: 200
+                <Col><Card onClick={() => this.onAccept(id, name, price, type)}
+                    style={{
+                        width: 200
                         // height: 400,marginRight:150,
                     }}
                     hoverable={true}
@@ -277,14 +286,14 @@ class OrderPage extends React.Component {
                         />
                     }
                 >
-                     <Card 
-                    //  style={{textAlign:"left",width:174,height:125}} 
-                     title={name} bordered={false}>
-                         <h1 className="formatB">
-         price: {price}<br />
+                    <Card
+                        //  style={{textAlign:"left",width:174,height:125}} 
+                        title={name} bordered={false}>
+                        <h1 className="formatB">
+                            price: {price}<br />
          type: {type}
-         </h1>
-        </Card>
+                        </h1>
+                    </Card>
                 </Card></Col>
 
             )
@@ -296,33 +305,33 @@ class OrderPage extends React.Component {
             <Layout className="layout">
                 <Header>
                     <Button className="logout-button" type="primary" danger onClick={this.onLogout}> log out </Button>
-                    <Button style={{fontSize:16,height:35}} type="primary">cashier: {this.state.name}</Button>,
+                    <Button style={{ fontSize: 16, height: 35 }} type="primary">cashier: {this.state.name}</Button>,
                     {/* <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['8']}>
                     </Menu> */}
                     {/* this.state.name */}
                 </Header>
                 <Content style={{ padding: '0 50px' }}>
                     <Breadcrumb style={{ margin: '16px 0' }}>
-                    <Breadcrumb style={{ margin: '16px 0' }}>
-                    <Link to={{
+                        <Breadcrumb style={{ margin: '16px 0' }}>
+                            <Link to={{
                                 pathname: '/HomePage',
-                           
+
                             }}><Breadcrumb.Item>Home</Breadcrumb.Item></Link>
-                    <Link to={{
+                            <Link to={{
                                 pathname: '/SalesPage',
-                               
+
                             }}
                             ><Breadcrumb.Item></Breadcrumb.Item></Link>
-                        <Breadcrumb.Item>Order</Breadcrumb.Item>
-                    </Breadcrumb>
+                            <Breadcrumb.Item>Order</Breadcrumb.Item>
+                        </Breadcrumb>
                     </Breadcrumb>
                     {/* <div className="site-layout-content">Content</div> */}
                     <Row className="site-layout-content">
-                        
+
                         <Col span={13} style={{ backgroundColor: "rgb(255, 255, 255, 0.3)" }} >
                             <Row>
-                                <Tabs style={{marginRight:200}} defaultActiveKey="1" onChange={this.callback} >
-                                <   TabPane tab="All" key="all"></TabPane>
+                                <Tabs style={{ marginRight: 200 }} defaultActiveKey="1" onChange={this.callback} >
+                                    <   TabPane tab="All" key="all"></TabPane>
                                     <TabPane tab="Coffee" key="coffee"></TabPane>
                                     <TabPane tab="Non-Coffee" key="non-coffee"></TabPane>
                                 </Tabs>
@@ -333,14 +342,14 @@ class OrderPage extends React.Component {
                         </Col>
                         <Col span={10}>
                             <Row>
-                                <Table pagination={false}  className="" columns={this.state.columns} dataSource={this.state.orders} rowKey={record => record.key} />
+                                <Table pagination={false} className="" columns={this.state.columns} dataSource={this.state.orders} rowKey={record => record.key} />
                             </Row>
                             <Row> <Divider>Total</Divider>
                                 <Row>
-                                    
+
                                     {/* <Col>สรุปยอดเงิน</Col> */}
-                                    <Col><Row><Statistic style={{marginLeft:490}} value={this.state.total} /></Row></Col>
-                                    <Row><Button style={{marginLeft:248}} type="primary" onClick={this.onSubmit}>Confirm</Button></Row>
+                                    <Col><Row><Statistic style={{ marginLeft: 490 }} value={this.state.total} /></Row></Col>
+                                    <Row><Button style={{ marginLeft: 248 }} type="primary" onClick={this.confirm}>Confirm</Button></Row>
                                 </Row> </Row>
                         </Col>
                     </Row>
