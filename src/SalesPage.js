@@ -8,6 +8,10 @@ import { Space, Card, Layout, Menu, Breadcrumb, Select, Button, DatePicker, Row,
 // import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 // import { getKeyThenIncreaseKey } from 'antd/lib/message';
 import moment from 'moment';
+import firebase, { auth, provider } from './firebase.js';
+const db = firebase.firestore();
+
+
 const { Meta } = Card;
 const DescriptionItem = ({ title, content }) => (
     <div className="site-description-item-profile-wrapper">
@@ -71,20 +75,21 @@ class SalesPage extends React.Component {
         });
     };
 
-    onChange = (date, dateString) => {
+    onChange = async (date, dateString) => {
         console.log(date, dateString);
         let wholedata = []
-        await db.collection('order').where("time", "==", dateString).get()
+        await db.collection('order').where("date", "==", dateString).get()
             .then((res) => {
                 res.forEach(doc => {
                     var temp = [];
+                    
                     temp.push(doc.id)
                     temp.push(doc.data())
                     wholedata.push(temp)
                 });
+                console.log(wholedata)
                 this.setState({ allData: wholedata })
             });
-
     }
 
     onClose = () => {

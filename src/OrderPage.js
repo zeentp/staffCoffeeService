@@ -17,7 +17,7 @@ class OrderPage extends React.Component {
     state = {
         allData: [],
         orders: [],
-        total : 0,
+        total: 0,
         columns: [
             {
                 title: 'description',
@@ -38,7 +38,7 @@ class OrderPage extends React.Component {
 
                     <Button.Group>
                         <Button onClick={() => this.decline(record)} icon={<MinusOutlined />} />
-                        <Statistic  value={this.state.orders[this.state.orders.findIndex(x => x.key == record.key)].quantity} />
+                        <Statistic value={this.state.orders[this.state.orders.findIndex(x => x.key == record.key)].quantity} />
                         <Button onClick={() => this.increase(record)} icon={<PlusOutlined />} />
                     </Button.Group>
 
@@ -57,7 +57,7 @@ class OrderPage extends React.Component {
                 width: 100,
                 render: (text, record) => (
                     <a>{this.state.orders[this.state.orders.findIndex(x => x.key == record.key)].quantity * record.unitPrice}</a>
-                    
+
                 )
             },
             {
@@ -79,16 +79,20 @@ class OrderPage extends React.Component {
 
     onChangeTotal = () => {
         const orders = [...this.state.orders]
-        
-        let total =  0;
-        for (var i = 0 ;i < orders.length ; i++ ){
+
+        let total = 0;
+        for (var i = 0; i < orders.length; i++) {
             total += orders[i].quantity * orders[i].unitPrice
             console.log(total)
         }
-        this.setState({ total: total})
+        this.setState({ total: total })
     }
     handleDelete = (key) => {
         const orders = [...this.state.orders];
+        
+        this.setState((state) => ({
+            total: state.total - parseInt(orders[orders.findIndex(x=>x.key === key)].quantity*orders[orders.findIndex(x=>x.key === key)].unitPrice)
+        }));
         this.setState({
             orders: orders.filter((item) => item.key !== key),
         });
@@ -127,7 +131,13 @@ class OrderPage extends React.Component {
         if (orders[orders.findIndex(x => x.key == record.key)].quantity > 100) {
             orders[orders.findIndex(x => x.key == record.key)].quantity = 100;
         }
+        else {
+            this.setState((state) => ({
+                total: state.total + parseInt(record.unitPrice)
+            }));
+        }
         this.setState({ orders });
+
         console.log(this.state.orders)
     };
 
@@ -140,9 +150,9 @@ class OrderPage extends React.Component {
                 quantity: 1,
                 type: type,
             }
-              
+
             const list = this.state.orders.concat(data);
-            this.setState({ 
+            this.setState({
                 orders: list
             })
         }
@@ -151,9 +161,11 @@ class OrderPage extends React.Component {
             console.log(this.state.orders[this.state.orders.findIndex(x => x.key == id)].quantity)
             let orders = [...this.state.orders];
             orders[orders.findIndex(x => x.key == id)].quantity = orders[orders.findIndex(x => x.key == id)].quantity + 1
-            orders[orders.findIndex(x => x.key == id)].amount = orders[orders.findIndex(x => x.key == id)].quantity * parseInt(price)
             this.setState({ orders })
         }
+        this.setState((state) => ({
+            total: state.total + parseInt(price)
+        }));
     }
     confirm = (id, name, price, type) => {
         // console.log(id)
@@ -193,41 +205,47 @@ class OrderPage extends React.Component {
         }
 
     }
-    onSubmit= () => {
+    onSubmit = () => {
         let m = []
         const o_date = new Intl.DateTimeFormat;
-        const f_date = (m_ca, m_it) => Object({...m_ca, [m_it.type]: m_it.value});
+        const f_date = (m_ca, m_it) => Object({ ...m_ca, [m_it.type]: m_it.value });
         const m_date = o_date.formatToParts().reduce(f_date, {});
-        const a =  m_date.year+ '-' + m_date.month + '-' +  m_date.day ;
+        const a = m_date.year + '-' + m_date.month + '-' + m_date.day;
         const orders = [...this.state.orders]
-        const time = new Date().toLocaleTimeString(); 
-        console.log('date',this.state.date)
+        const time = new Date().toLocaleTimeString();
+        console.log('date', this.state.date)
         // let lst = "[]"
-        for ( var i = 0 ; i< orders.length; i ++){
+        for (var i = 0; i < orders.length; i++) {
             m.push(orders[i].key)
             m.push(orders[i].quantity)
             console.log(m)
         }
-        
+
         db.collection('order').add({
             menu: m,
             name: this.state.name,
-            date : a,
-            time : time,
+            date: a,
+            time: time,
             // total: 
-        }) 
-        .then(docRef => {
-            console.log("add success~") 
-        })  
-        
+        })
+            .then(docRef => {
+                console.log("add success~")
+            })
+
     }
     decline = (record) => {
         let orders = [...this.state.orders];
-        orders[orders.findIndex(x => x.key == record.key)].quantity = orders[orders.findIndex(x => x.key ==  record.key)].quantity - 1
-        if (orders[orders.findIndex(x => x.key ==  record.key)].quantity < 1) {
-            orders[orders.findIndex(x => x.key ==  record.key)].quantity = 1;
+        orders[orders.findIndex(x => x.key == record.key)].quantity = orders[orders.findIndex(x => x.key == record.key)].quantity - 1
+        if (orders[orders.findIndex(x => x.key == record.key)].quantity < 1) {
+            orders[orders.findIndex(x => x.key == record.key)].quantity = 1;
         }
-        this.setState({ orders  });
+        else {
+            this.setState((state) => ({
+                total: state.total - parseInt(record.unitPrice)
+            }));
+        }
+        this.setState({ orders });
+
         console.log(this.state.orders)
     };
     render() {
