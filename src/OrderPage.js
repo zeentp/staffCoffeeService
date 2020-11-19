@@ -207,6 +207,7 @@ class OrderPage extends React.Component {
     }
     onSubmit = () => {
         let m = []
+        let q = []
         const o_date = new Intl.DateTimeFormat;
         const f_date = (m_ca, m_it) => Object({ ...m_ca, [m_it.type]: m_it.value });
         const m_date = o_date.formatToParts().reduce(f_date, {});
@@ -217,16 +218,17 @@ class OrderPage extends React.Component {
         // let lst = "[]"
         for (var i = 0; i < orders.length; i++) {
             m.push(orders[i].key)
-            m.push(orders[i].quantity)
+            q.push(orders[i].quantity)
             console.log(m)
         }
 
         db.collection('order').add({
-            menu: m,
+            menuName: m,
+            menuQuantity : q,
             name: this.state.name,
             date: a,
             time: time,
-            // total: 
+            total: this.state.total
         })
             .then(docRef => {
                 console.log("add success~")
