@@ -44,8 +44,8 @@ class homePage extends React.Component {
                     <Button className="logout-button" type="primary" danger onClick={this.onLogout}> log out </Button>
                     <div className="logo" />
                     {/*  */}
-                    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['8']}>
-                    </Menu>
+                    {/* <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['8']}>
+                    </Menu> */}
                 </Header>
                 <Content style={{ padding: '0 50px' }}>
                     <Breadcrumb style={{ margin: '16px 0' }}>
@@ -61,14 +61,10 @@ class homePage extends React.Component {
                 ></PageHeader>
                 <Row gutter={[16, 16]}>
                     <Col span={8}>
-                        <div>
-                            <Card title="Information" className="card"
-                                hoverable
-                                style={{ width: 300 }}
-
-                            >
-                                <Meta title="Username" description={this.state.name} />
-                                <Meta title="Role" description={this.state.role} />
+                        <div className="info">
+                            <Card title="Information" className="card" style={{width:300}}>
+                                <h1> Name: {this.state.name} </h1>
+                                <h1> Role: {this.state.role}</h1>
                             </Card>
                         </div>
                     </Col>
