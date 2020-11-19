@@ -14,7 +14,7 @@
 }
 .card{
     color: rebeccapurple;
-    margin-right: 10%;
+    margin-left: 10%;
 }
 .h1{
     color: rgb(5, 1, 252);
@@ -41,5 +41,12 @@
 .logout-button{
     margin-bottom: 10%;
     size: 80%;
+    float: right;
+    margin-top: 15px;
 }
-
+.info h1 {
+    size: 2px;
+    text-indent: 20px;
+    word-spacing: 10px;
+    font-family: Tahoma;
+}

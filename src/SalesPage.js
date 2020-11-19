@@ -72,10 +72,10 @@ class SalesPage extends React.Component {
                
                     <Button className="logout-button" type="primary" danger onClick={this.onLogout}> log out </Button>
  
-                    <div className="logo" />
-                    <div className="user" />
-                    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['8']}>
-                    </Menu>
+                    <div className="logo"/>
+                    {/* <div className="user" /> */}
+                    {/* <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['8']}>
+                    </Menu> */}
                 </Header>
                 <Content style={{ padding: '0 50px' }}>
                     <Breadcrumb style={{ margin: '16px 0' }}>
@@ -125,23 +125,23 @@ class SalesPage extends React.Component {
                         visible={this.state.visible}
                     >
                         <p className="site-description-item-profile-p" style={{ marginBottom: 24 }}>
-                            User Profile
+                            Orderlist Number
           </p>
-                        <p className="site-description-item-profile-p">Personal</p>
+                        <p className="site-description-item-profile-p">1</p>
 
                         <Divider />
-                        <p className="site-description-item-profile-p">Company</p>
+                        <p className="site-description-item-profile-p">List</p>
                         <Row>
                             <Col span={12}>
-                                <DescriptionItem title="Position" content="Programmer" />
+                                <DescriptionItem title="Chocolate" content="Latte" />
                             </Col>
                         </Row>
                         <Divider />
-                        <p className="site-description-item-profile-p">Contacts</p>
+                        <p className="site-description-item-profile-p">Total</p>
                         <Row>
                             <Col span={24}>
                                 <DescriptionItem
-                                    title="Github"
+                                    title="103 baht"
                                     content={
                                         <a href="http://github.com/ant-design/ant-design/">
                                             github.com/ant-design/ant-design/
@@ -152,7 +152,7 @@ class SalesPage extends React.Component {
                         </Row>
                     </Drawer>
                 </Content>
-                <Footer style={{ textAlign: 'center', position: 'fixed', left: 0, bottom: 0, width: "100%" }}>Ant Design ©2018 Created by Ant UED</Footer>
+                <Footer style={{ textAlign: 'center', position: 'fixed', left: 0, bottom: 0, width: "100%" }}>Cafe of Carefa</Footer>
             </Layout>
         );
     }

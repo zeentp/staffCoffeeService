@@ -5,38 +5,13 @@ import OrderImg from './img/buyButton.png';
 import salesPage from './img/sellButton.png';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import firebase, { auth, provider } from './firebase.js';
-import { Statistic, Button, Card, Modal, Layout, Menu, Breadcrumb, Table, Tabs, Row, Col, InputNumber, Divider } from 'antd';
-import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import { Statistic, Button, Card, Modal, Layout, Menu, Breadcrumb, Table, Tabs, Row, Col, InputNumber } from 'antd';
+import { MinusOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { getKeyThenIncreaseKey } from 'antd/lib/message';
 const { Meta } = Card;
 const { TabPane } = Tabs;
-const db = firebase.firestore();
 const { Header, Content, Footer } = Layout;
-const style = { background: '#0092ff', padding: '8px 0' };
-const data = [
-
-    {
-        key: 0,
-        name: '2018-02-11',
-        amount: 120,
-        type: 'hot',
-        note: 'transfer',
-    },
-    {
-        key: 1,
-        name: '2018-03-11',
-        amount: 243,
-        type: 'hot',
-        note: 'transfer',
-    },
-    {
-        key: 2,
-        name: '2018-04-11',
-        amount: 98,
-        type: 'freppe',
-        note: 'transfer',
-    },
-];
+const db = firebase.firestore();
 class OrderPage extends React.Component {
     state = {
         allData: [],
@@ -51,14 +26,24 @@ class OrderPage extends React.Component {
             {
                 title: 'Type',
                 dataIndex: 'type',
+                key: 'type',
                 width: 100,
             },
             {
                 title: 'Units',
                 dataIndex: 'unit',
                 width: 100,
-                render: (record) =>
-                    <InputNumber size="small" min={1} max={100000} defaultValue={1} onChange={() => this.onChange(record.key)} />
+                render: (text, record) => (
+
+                    <Button.Group>
+                        <Button onClick={() => this.decline(record.key)} icon={<MinusOutlined />} />
+                        <Statistic value={this.state.orders[this.state.orders.findIndex(x => x.key == record.key)].quantity} />
+                        <Button onClick={() => this.increase(record.key)} icon={<PlusOutlined />} />
+                    </Button.Group>
+
+
+
+                )
             },
             {
                 title: 'Units Price',
@@ -69,12 +54,30 @@ class OrderPage extends React.Component {
                 title: 'Amount',
                 dataIndex: 'amount',
                 width: 100,
+                render: (text, record) => (
+                    <a>{this.state.orders[this.state.orders.findIndex(x => x.key == record.key)].quantity * record.unitPrice}</a>
+                )
             },
+            {
+                title: 'Delete',
+                dataIndex: 'delete',
+                width: 100,
+                render: (text, record) => (
+                    <DeleteOutlined onClick={() => this.handleDelete(record.key)} />
+                )
+            }
 
         ],
         loginStatus: false,
         name: "",
         role: "",
+    };
+    handleDelete = (key) => {
+        const orders = [...this.state.orders];
+        this.setState({
+            orders: orders.filter((item) => item.key !== key),
+        });
+        console.log(this.state.orders);
     };
     componentDidMount() {
         let wholedata = [];
@@ -102,12 +105,15 @@ class OrderPage extends React.Component {
         localStorage.setItem('loginStatus', false);
         this.setState({ loginStatus: false })
     }
-    increase = () => {
-        let percent = this.state.percent + 1;
-        if (percent > 100) {
-            percent = 100;
+
+    increase = (key) => {
+        let orders = [...this.state.orders];
+        orders[orders.findIndex(x => x.key == key)].quantity = orders[orders.findIndex(x => x.key == key)].quantity + 1
+        if (orders[orders.findIndex(x => x.key == key)].quantity > 100) {
+            orders[orders.findIndex(x => x.key == key)].quantity = 100;
         }
-        this.setState({ percent });
+        this.setState({ orders });
+        console.log(this.state.orders)
     };
     onChange = (key) => {
         // console.log('changed', value);
@@ -116,15 +122,24 @@ class OrderPage extends React.Component {
     }
 
     onAccept = (id, name, price, type) => {
-
-        let data = {
-            key: id,
-            description: name,
-            unitPrice: price,
-            type: type,
+        if (this.state.orders.findIndex(x => x.key == id) == -1) {
+            let data = {
+                key: id,
+                description: name,
+                unitPrice: price,
+                quantity: 1,
+                type: type,
+            }
+            const list = this.state.orders.concat(data);
+            this.setState({ orders: list })
         }
-        const list = this.state.orders.concat(data);
-        this.setState({ orders: list })
+        else {
+            console.log(id)
+            console.log(this.state.orders[this.state.orders.findIndex(x => x.key == id)].quantity)
+            let orders = [...this.state.orders];
+            orders[orders.findIndex(x => x.key == id)].quantity = orders[orders.findIndex(x => x.key == id)].quantity + 1
+            this.setState({ orders })
+        }
     }
     confirm = (id, name, price, type) => {
         // console.log(id)
@@ -138,7 +153,8 @@ class OrderPage extends React.Component {
     }
     callback = (key) => {
         let wholedata = [];
-        db.collection('menu').where("category", "==", key).get()
+        if (key== 'coffee' || key =="non-coffee"){
+            db.collection('menu').where("category", "==", key).get()
             .then((res) => {
                 res.forEach(doc => {
                     var temp = [];
@@ -148,13 +164,30 @@ class OrderPage extends React.Component {
                 });
                 this.setState({ allData: wholedata })
             })
-    }
-    decline = () => {
-        let percent = this.state.percent - 1;
-        if (percent < 0) {
-            percent = 0;
+        }else {
+            db.collection('menu').get()
+            .then((res) => {
+                res.forEach(doc => {
+                    var temp = [];
+                    temp.push(doc.id)
+                    temp.push(doc.data())
+                    wholedata.push(temp)
+                });
+                this.setState({ allData: wholedata })
+            })
+
         }
-        this.setState({ percent });
+        
+    }
+    decline = (key) => {
+        console.log(key)
+        let orders = [...this.state.orders];
+        orders[orders.findIndex(x => x.key == key)].quantity = orders[orders.findIndex(x => x.key == key)].quantity - 1
+        if (orders[orders.findIndex(x => x.key == key)].quantity < 1) {
+            orders[orders.findIndex(x => x.key == key)].quantity = 1;
+        }
+        this.setState({ orders });
+        console.log(this.state.orders)
     };
     render() {
         if (this.state.loginStatus !== true) {
@@ -195,8 +228,8 @@ class OrderPage extends React.Component {
                     <Button className="logout-button" type="primary" danger onClick={this.onLogout}> log out </Button>
                     <div className="logo" />
                     <div className="user" />
-                    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['8']}>
-                    </Menu>
+                    {/* <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['8']}>
+                    </Menu> */}
 
                 </Header>
                 <Content style={{ padding: '0 50px' }}>
@@ -209,13 +242,14 @@ class OrderPage extends React.Component {
                     <Row className="site-layout-content">
                         <Col span={8}>
                             <Row>
-                                <Table pagination={false} className="table" columns={this.state.columns} dataSource={this.state.orders} />
+                                <Table pagination={false} className="table" columns={this.state.columns} dataSource={this.state.orders} rowKey={record => record.key} />
                             </Row>
                             <Row> </Row>
                         </Col>
                         <Col span={16} style={{ backgroundColor: "rgb(255, 255, 255, 0.3)" }}>
                             <Row>
                                 <Tabs defaultActiveKey="1" onChange={this.callback} >
+                                <   TabPane tab="All" key="all"></TabPane>
                                     <TabPane tab="Coffee" key="coffee"></TabPane>
                                     <TabPane tab="Non-Coffee" key="non-coffee"></TabPane>
                                 </Tabs>
@@ -223,40 +257,6 @@ class OrderPage extends React.Component {
                             <Row gutter={[32, 32]}>
                                 {listOfItem}
                             </Row>
-                        </Col>
-                    </Row>
-                    <Table pagination={false} className="table" columns={this.state.columns} dataSource={data} />
-                    <Button.Group>
-                        <Button onClick={this.decline} icon={<MinusOutlined />} />
-                        <Statistic value={this.state.percent} />
-                        <Button onClick={this.increase} icon={<PlusOutlined />} />
-                    </Button.Group>
-
-                    <Divider orientation="left">Coffee Menu</Divider>
-                    <Row gutter={{ xs: 16, sm: 16, md: 24, lg: 32 }}>
-                        <Col className="gutter-box" span={6}>
-                            <div style={style}>Latte</div>
-                        </Col>
-                        <Col className="gutter-box" span={6}>
-                            <div style={style}>col-6</div>
-                        </Col>
-                        <Col className="gutter-box" span={6}>
-                            <div style={style}>col-6</div>
-                        </Col>
-                        <Col className="gutter-box" span={6}>
-                            <div style={style}>col-6</div>
-                        </Col>
-                        <Col className="gutter-box" span={6}>
-                            <div style={style}>col-6</div>
-                        </Col>
-                        <Col className="gutter-box" span={6}>
-                            <div style={style}>col-6</div>
-                        </Col>
-                        <Col className="gutter-box" span={6}>
-                            <div style={style}>col-6</div>
-                        </Col>
-                        <Col className="gutter-box" span={6}>
-                            <div style={style}>col-6</div>
                         </Col>
                     </Row>
 

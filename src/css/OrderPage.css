@@ -1,7 +1,8 @@
 .site-layout-content {
     min-height: 280px;
     padding: 10px;
-    background: red;
+    background: #fff;
+    
   }
   .logo {
     float: left;
@@ -25,5 +26,5 @@
       background: firebrick;
 }
 .table{
-    width: 500px;
+    width: 560px;
 }
