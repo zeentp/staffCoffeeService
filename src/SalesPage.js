@@ -137,7 +137,7 @@ class SalesPage extends React.Component {
                     Orderlist Number
 </p>
                 <p className="site-description-item-profile-p">{this.state.selectDrawer!=-1 ?
-                 allData[allData.findIndex(x => x[0] === this.state.selectDrawer)][1].menuName.forEach((element,index)=> console.log(allData[allData.findIndex(x => x[0] === this.state.selectDrawer)][0].menuQuantity[index])): ""}</p>
+                 allData[allData.findIndex(x => x[0] === this.state.selectDrawer)][0]: ""}</p>
 
                 <Divider />
                 <p className="site-description-item-profile-p">{this.state.selectDrawer!=-1 ?
@@ -153,10 +153,10 @@ class SalesPage extends React.Component {
                     <Col span={24}>
                         <DescriptionItem
                             title={this.state.selectDrawer!=-1 ? this.state.allData[this.state.allData.findIndex(x => x[0] === this.state.selectDrawer)][1].total : ""}
-                            content={
-                                <a href="http://github.com/ant-design/ant-design/">
-                                    github.com/ant-design/ant-design/ </a>
-                            }
+                            // content={
+                            //     <a href="http://github.com/ant-design/ant-design/">
+                            //         github.com/ant-design/ant-design/ </a>
+                            // }
                         />
                     </Col>
                 </Row>
