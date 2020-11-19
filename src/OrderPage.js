@@ -6,7 +6,7 @@ import salesPage from './img/sellButton.png';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import firebase, { auth, provider } from './firebase.js';
 import { Statistic, Button, Card, Modal, Layout, Menu, Breadcrumb, Table, Tabs, Row, Col, InputNumber } from 'antd';
-import { MinusOutlined, PlusOutlined,DeleteOutlined } from '@ant-design/icons';
+import { MinusOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { getKeyThenIncreaseKey } from 'antd/lib/message';
 const { Meta } = Card;
 const { TabPane } = Tabs;
@@ -59,11 +59,21 @@ class OrderPage extends React.Component {
                 dataIndex: 'delete',
                 width: 100,
                 render: (text, record) => (
-                    <DeleteOutlined onClick={() => this.handleDelete(record.key)}/> 
+                    <DeleteOutlined onClick={() => this.handleDelete(record.key)} />
                 )
             }
 
         ],
+        loginStatus: false,
+        name: "",
+        role: "",
+    };
+    handleDelete = (key) => {
+        const orders = [...this.state.orders];
+        this.setState({
+            orders: orders.filter((item) => item.key !== key),
+        });
+        console.log(this.state.orders);
     };
     handleDelete = (key) => {
         const orders = [...this.state.orders];
@@ -85,6 +95,20 @@ class OrderPage extends React.Component {
                 this.setState({ allData: wholedata })
             })
     }
+    componentWillMount() {
+        const loginStatus = localStorage.getItem('loginStatus') === 'true';
+        const name = loginStatus ? localStorage.getItem('name') : '';
+        const role = loginStatus ? localStorage.getItem('role') : '';
+        this.setState({ loginStatus, name, role });
+        console.log(loginStatus)
+
+    }
+
+    onLogout = () => {
+        localStorage.setItem('loginStatus', false);
+        this.setState({ loginStatus: false })
+    }
+
     increase = (key) => {
         let orders = [...this.state.orders];
         orders[orders.findIndex(x => x.key == key)].quantity = orders[orders.findIndex(x => x.key == key)].quantity + 1
@@ -132,7 +156,8 @@ class OrderPage extends React.Component {
     }
     callback = (key) => {
         let wholedata = [];
-        db.collection('menu').where("category", "==", key).get()
+        if (key== 'coffee' || key =="non-coffee"){
+            db.collection('menu').where("category", "==", key).get()
             .then((res) => {
                 res.forEach(doc => {
                     var temp = [];
@@ -142,6 +167,20 @@ class OrderPage extends React.Component {
                 });
                 this.setState({ allData: wholedata })
             })
+        }else {
+            db.collection('menu').get()
+            .then((res) => {
+                res.forEach(doc => {
+                    var temp = [];
+                    temp.push(doc.id)
+                    temp.push(doc.data())
+                    wholedata.push(temp)
+                });
+                this.setState({ allData: wholedata })
+            })
+
+        }
+        
     }
     decline = (key) => {
         console.log(key)
@@ -154,6 +193,10 @@ class OrderPage extends React.Component {
         console.log(this.state.orders)
     };
     render() {
+        if (this.state.loginStatus !== true) {
+            console.log('check')
+            this.props.history.push("/")
+        }
         const listOfItem = this.state.allData.map((item) => {
             var id = item[0]
             var name = item[1].name
@@ -182,12 +225,14 @@ class OrderPage extends React.Component {
             return (<div> {component}</div>)
         })
         return (
+
             <Layout className="layout">
                 <Header>
+                    <Button className="logout-button" type="primary" danger onClick={this.onLogout}> log out </Button>
                     <div className="logo" />
                     <div className="user" />
-                    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['8']}>
-                    </Menu>
+                    {/* <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['8']}>
+                    </Menu> */}
 
                 </Header>
                 <Content style={{ padding: '0 50px' }}>
@@ -207,6 +252,7 @@ class OrderPage extends React.Component {
                         <Col span={16} style={{ backgroundColor: "rgb(255, 255, 255, 0.3)" }}>
                             <Row>
                                 <Tabs defaultActiveKey="1" onChange={this.callback} >
+                                <   TabPane tab="All" key="all"></TabPane>
                                     <TabPane tab="Coffee" key="coffee"></TabPane>
                                     <TabPane tab="Non-Coffee" key="non-coffee"></TabPane>
                                 </Tabs>
@@ -216,6 +262,7 @@ class OrderPage extends React.Component {
                             </Row>
                         </Col>
                     </Row>
+
                 </Content>
                 <Footer style={{ textAlign: 'center', position: 'fixed', left: 0, bottom: 0, width: "100%" }}>Ant Design ©2018 Created by Ant UED</Footer>
             </Layout>

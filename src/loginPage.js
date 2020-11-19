@@ -3,7 +3,7 @@ import 'antd/dist/antd.css';
 import './css/loginPage.css';
 import firebase from './firebase.js';
 import { Form, Input, Button, Checkbox, Card } from 'antd';
-import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 const db = firebase.firestore();
 
 const onFinish = (values) => {
@@ -40,15 +40,73 @@ class loginPage extends React.Component {
     super(props)
     this.state = {
       data: [],
-
+      loginStatus: false,
+      name: "",
+      role: "",
     }
   }
+  componentWillMount() {
+    const loginStatus = localStorage.getItem('loginStatus') === 'true';
+    const name = loginStatus ? localStorage.getItem('name') : '';
+    const role = loginStatus ? localStorage.getItem('role') : '';
+    this.setState({loginStatus,name,role}); 
+    console.log(loginStatus)
+}
+
+
+  onFinish = async (values) => {
+    let id = [];
+    let name = "";
+    let role ="";
+    var status = 0;
+    console.log('Success:', values);
+    console.log('username:', values.username);
+    console.log('password:', values.password);
+    await db.collection('user').where("username", "==", values.username).where("password", "==", values.password).get().then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        console.log(doc.id, " => ", doc.data().username);
+        console.log(doc.id, " => ", doc.data().password);
+        id.push(doc.id);
+        name = doc.data().name 
+        role = doc.data().role
+        status = 1
+      });
+    });
+
+    if (status === 1) {
+      localStorage.setItem('loginStatus', true);
+      localStorage.setItem('name',name);
+      localStorage.setItem('role',role);
+      this.setState({ loginStatus: true })
+    }
+
+
+  };
+
+  onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
+
+  onSubmit = () => {
+
+  }
   render() {
+    // if (this.state.loginStatus) {  // ส่งค่า
+    //   return <Redirect to={{      //
+    //     pathname: '/HomePage',   // ผ่าน path
+    //     state: { name: this.state.name , role : this.state.role}
+    //   }} />
+    // }
+    if (this.state.loginStatus === true) {
+      console.log('check')
+      this.props.history.push("/HomePage")
+  }
     return (
+
       <div class="bg">
         <Card title="Coffee Shop" style={{ width: 500 }} class="body">
           <Form
-            name="basic" initialValues={{ remember: true, }} onFinish={this.onFinish} onFinishFailed={onFinishFailed}>
+            name="basic" initialValues={{ remember: true, }} onFinish={this.onFinish} onFinishFailed={this.onFinishFailed}>
             <Form.Item
               label="Username"
               name="username"
@@ -75,7 +133,7 @@ class loginPage extends React.Component {
               <Input.Password />
             </Form.Item>
             <Form.Item >
-              <Button type="primary" htmlType="submit"  >
+              <Button type="primary" htmlType="submit" onClick={this.onSubmit} >
                 Submit
           </Button>
             </Form.Item>

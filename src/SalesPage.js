@@ -1,41 +1,159 @@
-import React, { Component } from 'react';
 import 'antd/dist/antd.css';
-import OrderImg from './img/buyButton.png';
-import salesPage from './img/sellButton.png';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import firebase, { auth, provider } from './firebase.js';
-import {PageHeader,Card } from 'antd';
+import React, { useState, Component } from 'react';
+// import OrderImg from './img/buyButton.png';
+// import salesPage from './img/sellButton.png';
+import { BrowserRouter as Redirect, Link } from 'react-router-dom';
+// import firebase, { auth, provider } from './firebase.js';
+import { Space, Card, Layout, Menu, Breadcrumb, Select, Button, DatePicker, Row, Divider, List, Collapse, Col, Avatar, Drawer } from 'antd';
+// import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
+// import { getKeyThenIncreaseKey } from 'antd/lib/message';
 const { Meta } = Card;
+const DescriptionItem = ({ title, content }) => (
+    <div className="site-description-item-profile-wrapper">
+        <p className="site-description-item-profile-p-label">{title}:</p>
+        {content}
+    </div>
+);
+const { Header, Content, Footer } = Layout;
+const style = { background: '#0092ff', padding: '8px 0' };
+const { Panel } = Collapse;
+
+function callback(key) {
+    console.log(key);
+}
+
+function onChange(date, dateString) {
+    console.log(date, dateString);
+}
 class SalesPage extends React.Component {
     constructor(props) {
+        super(props)
         this.state = {
-            userr: "",
-
+            loginStatus: false,
+            name:"",
+            role:"",
+            visible: false
         }
     }
 
+    componentWillMount() {
+        const loginStatus = localStorage.getItem('loginStatus') === 'true';
+        const name = loginStatus ? localStorage.getItem('name') : '';
+        const role = loginStatus ? localStorage.getItem('role') : '';
+        this.setState({loginStatus,name,role}); 
+        console.log(loginStatus)
+
+    }
+
+    onLogout = () => {
+        localStorage.setItem('loginStatus', false);
+        this.setState({ loginStatus: false })
+    }
+
+    showDrawer = () => {
+        this.setState({
+            visible: true,
+        });
+    };
+  
+    onClose = () => {
+        this.setState({
+            visible: false,
+        });
+    }
     render() {
-
+        if (this.state.loginStatus !== true) {
+            console.log('check')
+            this.props.history.push("/")
+        }
         return (
-
-            <div>
-                <PageHeader
-                    className="site-page-header"
-                    onBack={(loginPage) => null}
-                    title="Coffee Shop"
-                    subTitle="Sales Page"
-
-             >
-                 <Card title="Information"
-                                hoverable
-                                style={{ width: 300 }}
-                            //cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+            <Layout className="layout">
+                <Header>
+               
+                    <Button className="logout-button" type="primary" danger onClick={this.onLogout}> log out </Button>
+ 
+                    <div className="logo"/>
+                    {/* <div className="user" /> */}
+                    {/* <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['8']}>
+                    </Menu> */}
+                </Header>
+                <Content style={{ padding: '0 50px' }}>
+                    <Breadcrumb style={{ margin: '16px 0' }}>
+                        <Breadcrumb.Item>Home</Breadcrumb.Item>
+                        <Breadcrumb.Item>List</Breadcrumb.Item>
+                        <Breadcrumb.Item>App</Breadcrumb.Item>
+                    </Breadcrumb>
+                    <Space direction="vertical">
+                        <DatePicker onChange={onChange} />
+                    </Space>
+                    {/* <Collapse defaultActiveKey={['1']} onChange={callback}>
+                        <Panel header="This is panel header 2" key="2"> */}
+                    <List
+                        dataSource={[
+                            {
+                                name: 'fang',
+                            },
+                            {
+                                name: 'Lily',
+                            },
+                        ]}
+                        bordered
+                        renderItem={item => (
+                            <List.Item
+                                key={item.id}
+                                actions={[
+                                    <a onClick={this.showDrawer} key={`a-${item.id}`}>
+                                        Detail
+                </a>,
+                                ]}
                             >
-                                <Meta title="Username" description="kk"/>
-                                <Meta title="Role" description="Admin" />
-                            </Card>
-            </PageHeader>
-            </div>
+                                <List.Item.Meta
+                                    avatar={
+                                        <Avatar src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png" />
+                                    }
+                                    title={<a href="https://ant.design/index-cn">{item.name}</a>}
+                                    description="Progresser XTech"
+                                />
+                            </List.Item>
+                        )}
+                    />
+                    <Drawer
+                        width={640}
+                        placement="right"
+                        closable={false}
+                        onClose={this.onClose}
+                        visible={this.state.visible}
+                    >
+                        <p className="site-description-item-profile-p" style={{ marginBottom: 24 }}>
+                            Orderlist Number
+          </p>
+                        <p className="site-description-item-profile-p">1</p>
+
+                        <Divider />
+                        <p className="site-description-item-profile-p">List</p>
+                        <Row>
+                            <Col span={12}>
+                                <DescriptionItem title="Chocolate" content="Latte" />
+                            </Col>
+                        </Row>
+                        <Divider />
+                        <p className="site-description-item-profile-p">Total</p>
+                        <Row>
+                            <Col span={24}>
+                                <DescriptionItem
+                                    title="103 baht"
+                                    content={
+                                        <a href="http://github.com/ant-design/ant-design/">
+                                            github.com/ant-design/ant-design/
+                  </a>
+                                    }
+                                />
+                            </Col>
+                        </Row>
+                    </Drawer>
+                </Content>
+                <Footer style={{ textAlign: 'center', position: 'fixed', left: 0, bottom: 0, width: "100%" }}>Cafe of Carefa</Footer>
+            </Layout>
         );
     }
 }
