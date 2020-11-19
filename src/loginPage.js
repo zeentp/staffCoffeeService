@@ -4,6 +4,8 @@ import './css/loginPage.css';
 import firebase from './firebase.js';
 import { Form, Input, Button, Checkbox, Card,message,Space } from 'antd';
 import { Redirect } from 'react-router-dom';
+import LogoImg from './img/Logo.png';
+
 const db = firebase.firestore();
 const success = () => {
   message.success('This is a success message');
@@ -96,7 +98,8 @@ class loginPage extends React.Component {
     return (
       
       <div class="bg">
-        <Card title="Coffee Shop" style={{ width: 500 }} class="body">
+        <img src={LogoImg} id='logo'/>
+        <Card title="Coffee Shop Manager" style={{ width: 500 }} class="body">
           <Form
             name="basic" initialValues={{ remember: true, }} onFinish={this.onFinish} onFinishFailed={this.onFinishFailed}>
             <Form.Item

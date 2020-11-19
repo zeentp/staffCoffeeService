@@ -20,20 +20,21 @@ class OrderPage extends React.Component {
         total: 0,
         columns: [
             {
+                textWrap: 'word-break',
                 title: 'description',
                 dataIndex: 'description',
-                width: 200,
+                width: 120,
             },
             {
                 title: 'Type',
                 dataIndex: 'type',
                 key: 'type',
-                width: 100,
+                width: 80,
             },
             {
                 title: 'Units',
                 dataIndex: 'unit',
-                width: 200,
+                width: 120,
                 align: 'center',
                 render: (text, record) => (
 
@@ -49,23 +50,24 @@ class OrderPage extends React.Component {
                 )
             },
             {
-                title: 'Units Price',
+                title: 'Price',
                 dataIndex: 'unitPrice',
-                width: 100,
+                width: 62,
             },
             {
                 title: 'Amount',
                 dataIndex: 'amount',
-                width: 100,
+                width: 80,
                 render: (text, record) => (
                     <a>{this.state.orders[this.state.orders.findIndex(x => x.key == record.key)].quantity * record.unitPrice}</a>
 
                 )
             },
             {
+                //  ellipsis: true,
                 title: 'Delete',
                 dataIndex: 'delete',
-                width: 100,
+                width:80,
                 render: (text, record) => (
                     <DeleteOutlined onClick={() => this.handleDelete(record.key)} />
                 )
@@ -264,7 +266,9 @@ class OrderPage extends React.Component {
             var img = item[1].img
             var component = (
                 <Col><Card onClick={() => this.confirm(id, name, price, type)}
-                    style={{ width: 225,height: 445,marginLeft:50 }}
+                    style={{ width: 200
+                        // height: 400,marginRight:150,
+                    }}
                     hoverable={true}
                     cover={
                         <img
@@ -273,7 +277,9 @@ class OrderPage extends React.Component {
                         />
                     }
                 >
-                     <Card style={{textAlign:"left",width:174,height:125}} title={name} bordered={false}>
+                     <Card 
+                    //  style={{textAlign:"left",width:174,height:125}} 
+                     title={name} bordered={false}>
                          <h1 className="formatB">
          price: {price}<br />
          type: {type}
@@ -290,34 +296,32 @@ class OrderPage extends React.Component {
             <Layout className="layout">
                 <Header>
                     <Button className="logout-button" type="primary" danger onClick={this.onLogout}> log out </Button>
-                    <div className="logo" />
-                    <div className="user" />
+                    <Button style={{fontSize:16,height:35}} type="primary">cashier: {this.state.name}</Button>,
                     {/* <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['8']}>
                     </Menu> */}
                     {/* this.state.name */}
                 </Header>
                 <Content style={{ padding: '0 50px' }}>
                     <Breadcrumb style={{ margin: '16px 0' }}>
-                        <Breadcrumb.Item>Home</Breadcrumb.Item>
-                        <Breadcrumb.Item>List</Breadcrumb.Item>
-                        <Breadcrumb.Item>App</Breadcrumb.Item>
+                    <Breadcrumb style={{ margin: '16px 0' }}>
+                    <Link to={{
+                                pathname: '/HomePage',
+                           
+                            }}><Breadcrumb.Item>Home</Breadcrumb.Item></Link>
+                    <Link to={{
+                                pathname: '/SalesPage',
+                               
+                            }}
+                            ><Breadcrumb.Item></Breadcrumb.Item></Link>
+                        <Breadcrumb.Item>Order</Breadcrumb.Item>
+                    </Breadcrumb>
                     </Breadcrumb>
                     {/* <div className="site-layout-content">Content</div> */}
-                    <Row style={{width:1440}} className="site-layout-content">
-                        <Col span={8}>
+                    <Row className="site-layout-content">
+                        
+                        <Col span={13} style={{ backgroundColor: "rgb(255, 255, 255, 0.3)" }} >
                             <Row>
-                                <Table pagination={false} className="table" columns={this.state.columns} dataSource={this.state.orders} rowKey={record => record.key} />
-                            </Row>
-                            <Row> <Divider>Total</Divider>
-                                <Row>
-                                    {/* <Col>สรุปยอดเงิน</Col> */}
-                                    <Col><Row><Statistic value={this.state.total} /></Row></Col>
-                                    <Row><Button onClick={this.onSubmit}>submit</Button></Row>
-                                </Row> </Row>
-                        </Col>
-                        <Col span={16} style={{ backgroundColor: "rgb(255, 255, 255, 0.3)" }}className="catTab">
-                            <Row>
-                                <Tabs style={{marginLeft:50}} defaultActiveKey="1" onChange={this.callback} >
+                                <Tabs style={{marginRight:200}} defaultActiveKey="1" onChange={this.callback} >
                                 <   TabPane tab="All" key="all"></TabPane>
                                     <TabPane tab="Coffee" key="coffee"></TabPane>
                                     <TabPane tab="Non-Coffee" key="non-coffee"></TabPane>
@@ -326,6 +330,18 @@ class OrderPage extends React.Component {
                             <Row gutter={[32, 32]}>
                                 {listOfItem}
                             </Row>
+                        </Col>
+                        <Col span={10}>
+                            <Row>
+                                <Table pagination={false}  className="" columns={this.state.columns} dataSource={this.state.orders} rowKey={record => record.key} />
+                            </Row>
+                            <Row> <Divider>Total</Divider>
+                                <Row>
+                                    
+                                    {/* <Col>สรุปยอดเงิน</Col> */}
+                                    <Col><Row><Statistic style={{marginLeft:490}} value={this.state.total} /></Row></Col>
+                                    <Row><Button style={{marginLeft:248}} type="primary" onClick={this.onSubmit}>Confirm</Button></Row>
+                                </Row> </Row>
                         </Col>
                     </Row>
 

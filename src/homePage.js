@@ -42,45 +42,42 @@ class homePage extends React.Component {
             <Layout className="layout">
                 <Header>
                     <Button className="logout-button" type="primary" danger onClick={this.onLogout}> log out </Button>
-                    <div className="logo" />
+                    <Button style={{fontSize:16,height:35}} type="primary">cashier: {this.state.name}</Button>,
                     {/*  */}
                     {/* <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['8']}>
                     </Menu> */}
                 </Header>
                 <Content style={{ padding: '0 50px' }}>
-                    <Breadcrumb style={{ margin: '16px 0' }}>
+                <Breadcrumb style={{ margin: '16px 0' }}>
                         <Breadcrumb.Item>Home</Breadcrumb.Item>
-                        <Breadcrumb.Item>List</Breadcrumb.Item>
-                        <Breadcrumb.Item>App</Breadcrumb.Item>
+                        <Breadcrumb.Item> </Breadcrumb.Item>
+
+                        
                     </Breadcrumb>
                     {/* <div className="site-layout-content">Content</div> */}
                 </Content>
-                <Footer style={{ textAlign: 'center', position: 'fixed', left: 0, bottom: 0, width: "100%" }}>Ant Design ©2018 Created by Ant UED</Footer>
                 {/* <Button type="primary" danger onClick={this.onLogout}> log out </Button> */}
-                <PageHeader
-                ></PageHeader>
-                <Row gutter={[16, 16]}>
+
+                <Row gutter={[16, 16]} className="info">
                     <Col span={8}>
-                        <div className="info">
-                            <Card hoverable title="Information" className="card" style={{width:300}}>
-                                <h1> Name: {this.state.name} </h1>
-                                <h1> Role: {this.state.role}</h1>
-                            </Card>
+                        <div>
+                            <h1>Information</h1>
+                            <h2> Name: {this.state.name} </h2>
+                            <h2> Role: {this.state.role}</h2>
                         </div>
                     </Col>
                     <Col span={16}>
 
-                        <Card title="Menu" className="body">
+                        <div className="menuHome">
+                            <h1>Menu</h1>
                             <Link to={{
-                                pathname: '/SalesPage',
-                               
+                                pathname: '/SalesPage',   
                             }}
-                            > <img src={salesPage} className="center" /></Link>
+                            > <img src={salesPage} className="center" /><span>Order History</span></Link>
                             <Link to={{
                                 pathname: '/OrderPage',
-                           
-                            }}><img src={OrderImg} className="center" /></Link>
-                        </Card>
+                            }}> <img src={OrderImg} className="center" /><span>Ordering</span></Link>
+                        </div>
 
                     </Col>
                 </Row>

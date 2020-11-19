@@ -47,11 +47,19 @@
     float: right;
     margin-top: 15px;
 }
+
 .info h1 {
-    size: 2px;
+    font-size: 30px;
+    font-weight: bold;
     text-indent: 20px;
     word-spacing: 10px;
-    font-family: Tahoma;
+    text-decoration: underline;
+}
+
+.info h2 {
+    font-size: 20px;
+    text-indent: 20px;
+    word-spacing: 10px;
 }
 .formatA{
     color: #19df2a;
@@ -66,3 +74,38 @@
     display: flex;
 
 }
+
+.bg #logo {
+    background-color: grey;
+    opacity: 80%;
+    width: 275px;
+}
+
+.menuHome span {
+    text-align: center;
+    display: block;
+    padding-bottom: 10%;
+}
+
+.menuHome img {
+    display: block;
+    margin: auto;
+    border: 0;
+    left: 0px;
+}
+
+.menuHome {
+    display: inline-block;
+    vertical-align: top;
+    color: #333;
+    flex-direction: column;
+    background: rgba(28, 165, 170, 0.3);
+    background-size: 300px 100px;
+}
+
+.info {
+    font: 1em Helvetica;
+}
+
+
+
