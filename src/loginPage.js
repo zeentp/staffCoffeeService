@@ -32,13 +32,17 @@ class loginPage extends React.Component {
       loginStatus: false,
       name: "",
       role: "",
+      phone: ""
     }
   }
   componentWillMount() {
     const loginStatus = localStorage.getItem('loginStatus') === 'true';
     const name = loginStatus ? localStorage.getItem('name') : '';
     const role = loginStatus ? localStorage.getItem('role') : '';
-    this.setState({loginStatus,name,role}); 
+    const phone = loginStatus ? localStorage.getItem('phone') : '';
+
+    
+    this.setState({loginStatus,name,role,phone}); 
     console.log(loginStatus)
 }
 
@@ -47,6 +51,7 @@ class loginPage extends React.Component {
     let id = [];
     let name = "";
     let role ="";
+    let phone = "";
     var status = 0;
     console.log('Success:', values);
     console.log('username:', values.username);
@@ -58,6 +63,7 @@ class loginPage extends React.Component {
         id.push(doc.id);
         name = doc.data().name 
         role = doc.data().role
+        phone = doc.data().phone
         status = 1
       });
     });
@@ -66,6 +72,7 @@ class loginPage extends React.Component {
       localStorage.setItem('loginStatus', true);
       localStorage.setItem('name',name);
       localStorage.setItem('role',role);
+      localStorage.setItem('phone',phone);
       this.setState({ loginStatus: true })
       
     }

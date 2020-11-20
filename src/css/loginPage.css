@@ -9,7 +9,7 @@
     font-family: Tahoma;
 }
 .body{
-    color: rebeccapurple;
+    color: rgb(187, 187, 187);
     background-color: lightblue;
 }
 .card{
@@ -49,7 +49,8 @@
 }
 
 .info h1 {
-    font-size: 30px;
+    font-size: 20px;
+    text-align:top;
     font-weight: bold;
     text-indent: 20px;
     word-spacing: 10px;
@@ -99,13 +100,10 @@
     vertical-align: top;
     color: #333;
     flex-direction: column;
-    background: rgba(28, 165, 170, 0.3);
+    background: rgba(201, 233, 235, 0.568);
     background-size: 300px 100px;
 }
 
 .info {
     font: 1em Helvetica;
 }
-
-
-

@@ -342,7 +342,7 @@ class OrderPage extends React.Component {
                         </Col>
                         <Col span={10}>
                             <Row>
-                                <Table pagination={false} className="" columns={this.state.columns} dataSource={this.state.orders} rowKey={record => record.key} />
+                                <Table style={{marginLeft:60}} pagination={false} columns={this.state.columns} dataSource={this.state.orders} rowKey={record => record.key} />
                             </Row>
                             <Row> <Divider>Total</Divider>
                                 <Row>
@@ -355,8 +355,8 @@ class OrderPage extends React.Component {
                     </Row>
 
                 </Content>
-                <Footer style={{ textAlign: 'center', position: 'fixed', left: 0, bottom: 0, width: "100%" }}></Footer>
-            </Layout>
+                <Footer style={{  color:"white",backgroundColor:" rgb(187, 187, 187)" ,textAlign: 'center', position: 'fixed', left: 0, bottom: 0, width: "100%" }}>Orso Polare Café</Footer>
+                </Layout>
         );
     }
 }
