@@ -40,7 +40,6 @@ class homePage extends React.Component {
             this.props.history.push("/")
         }
         return (
-            
             <Layout className="layout">
                 <Header>
                     <Button className="logout-button" type="primary" danger onClick={this.onLogout}> log out </Button>
