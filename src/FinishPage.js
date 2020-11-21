@@ -109,7 +109,8 @@ class SalesPage extends React.Component {
             var id = item[0]
             var name = item[1].name
             // var price = item[1].price
-            // var type = item[1].type
+            // var type = item[1].type 
+            
             var time = item[1].time
             var total = item[1].total
             var orderId = item[1].orderId
