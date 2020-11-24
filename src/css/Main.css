@@ -1,0 +1,16 @@
+ 
+.logo {
+    width: 20%;
+    height: 20%;
+    opacity: 100%;
+}
+.bg {
+   
+    min-height:90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url(bgg.jpg) no-repeat;
+    background-size: cover;
+    font-family: Tahoma;
+}
