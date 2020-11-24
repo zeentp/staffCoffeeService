@@ -27,7 +27,7 @@ const columns = [
     }
 ];
 
-class SalesPage extends React.Component {
+class FinishPage extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -39,31 +39,28 @@ class SalesPage extends React.Component {
             dateForSearch: "",
             allData: [],
             allMenu:[],
-            selectDrawer: -1
+            selectDrawer: -1,
+            tableData: []
         }
     }
     
     componentDidMount() {
         const wholedata2 = []
         const wholedata = []
-        let tempName = []
-        let tempQuantity = []
-        let tempAmount = []
-        let tempType = []
-        let tempPrice = []
-        var pluginArrayArg = new Array();
+  
         db.collection('menu').get()
         .then((res) => {
             res.forEach(doc => {
                 var temp = [];
                 temp.push(doc.id)
                 temp.push(doc.data())
-                console.log(doc.data())
+                // console.log(doc.data())
                 wholedata2.push(temp)
             });
             this.setState({ allMenu: wholedata2 })
+            console.log('allmenu',this.state.allMenu)
         })  
-        console.log(this.state.orderId)
+        console.log('order',this.state.orderId)
         let str = this.state.orderId
         db.collection('order').where("orderId", "==", str).get()
         .then((res) => {
@@ -71,12 +68,52 @@ class SalesPage extends React.Component {
                 var temp = [];
                 temp.push(doc.id)
                 temp.push(doc.data())
-                console.log(doc.data())
+                // console.log(doc.data())
                 wholedata.push(temp)
             });
             this.setState({ allData: wholedata,  })
+            console.log('all',this.state.allData)
+            let tempName = []
+            let tempQuantity = []
+            let tempAmount = []
+            let tempType = []
+            let tempPrice = []
+            var pluginArrayArg = new Array();
+            const {allData,allMenu} = this.state
+            console.log('all',this.state.allData)
+            const lstMenuId = allData[0][1]
+            console.log('menuName',lstMenuId.menuName[0])
+            for (var i = 0; i < lstMenuId.menuName.length ; i++) {
+                console.log('d3')
+                console.log('menuName',lstMenuId.menuName[i])
+                tempName.push(allMenu[allMenu.findIndex(x => x[0] === lstMenuId.menuName[i])][1].name)
+                tempType.push(lstMenuId.menuType[i])
+                const t = lstMenuId.menuType[i]
+                console.log('xx',allMenu[allMenu.findIndex(x => x[0] === lstMenuId.menuName[i])][1].type)
+                tempPrice.push(allMenu[allMenu.findIndex(x => x[0] === lstMenuId.menuName[i])][1].type[t])
+                tempQuantity.push(lstMenuId.menuQuantity[i])
+                 tempAmount.push(parseInt(tempPrice[i] *tempQuantity[i]))
+            }
+            for (var i = 0; i < tempName.length; i++) {
+                console.log('d3')
+                var jsonArg1 = new Object();
+                jsonArg1.name = tempName[i];
+                jsonArg1.quantity = tempQuantity[i];
+                jsonArg1.amount = tempAmount[i];
+                jsonArg1.type = tempType[i];
+                jsonArg1.price = tempPrice[i];
+    
+                pluginArrayArg.push(jsonArg1);
+                console.log('plug', pluginArrayArg)
+            }
+    
+            var jsonArray = JSON.parse(JSON.stringify(pluginArrayArg))
+            this.setState({ tableData: jsonArray })
+            console.log(jsonArray)
+
         });
-        console.log(this.state.allData)
+       
+       
         
     }
 
@@ -87,6 +124,9 @@ class SalesPage extends React.Component {
         const orderId = loginStatus ? localStorage.getItem('orderId') : '';
         this.setState({ loginStatus, name, role, orderId });
         console.log(loginStatus)
+        console.log('orderId',orderId)
+
+        
 
     }
 
@@ -126,7 +166,7 @@ class SalesPage extends React.Component {
                 <Row>
                     <Col span={24}>
 
-                        <Table columns={columns}pagination={false} size="small" />
+                        <Table columns={columns}dataSource={this.state.tableData} pagination={false} size="small" />
                     </Col>
                 </Row>
                 <Divider />
@@ -154,4 +194,4 @@ class SalesPage extends React.Component {
         );
     }
 }
-export default SalesPage;
+export default FinishPage;
