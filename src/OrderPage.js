@@ -62,7 +62,7 @@ class OrderPage extends React.Component {
                 dataIndex: 'amount',
                 width: 80,
                 render: (text, record) => (
-                    <a>{this.state.orders[this.state.orders.findIndex(x => x.key == record.key && x.type == record.type)].quantity * record.unitPrice}</a>
+                    <a>{(this.state.orders[this.state.orders.findIndex(x => x.key == record.key && x.type == record.type)].quantity * record.unitPrice).toLocaleString()}</a>
 
                 )
             },

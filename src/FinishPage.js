@@ -133,7 +133,7 @@ class SalesPage extends React.Component {
                 <Divider>Total</Divider>
 
                 <p style={{ textAlign: "center" }}>
-                    {total}</p>
+                    {(total).toLocaleString()} </p>
                 <Divider>Cashier</Divider>
                 <p className="site-description-item-profile-p" style={{ textAlign: "center" }}>{name}</p>
                 <Divider>Time</Divider>
