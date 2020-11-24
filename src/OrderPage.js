@@ -20,6 +20,8 @@ class OrderPage extends React.Component {
         allData: [],
         orders: [],
         total: 0,
+        totalWithVat:0,
+        vat:0,
         types: "",
         columns: [
             {
@@ -89,11 +91,15 @@ class OrderPage extends React.Component {
         const orders = [...this.state.orders]
 
         let total = 0;
+
         for (var i = 0; i < orders.length; i++) {
             total += orders[i].quantity * orders[i].unitPrice
+           
+
             console.log(total)
         }
         this.setState({ total: total })
+
     }
     handleDelete = (record) => {
         console.log("record", record)
@@ -285,7 +291,10 @@ class OrderPage extends React.Component {
                 name: this.state.name,
                 date: a,
                 time: time,
-                total: this.state.total
+                total: this.state.total,
+                vat: this.state.total*0.07,
+                totalWithVat:this.state.total+this.state.vat,
+                
             })
                 .then(docRef => {
                     console.log("add success~")
@@ -412,6 +421,8 @@ class OrderPage extends React.Component {
 
                                     {/* <Col>สรุปยอดเงิน</Col> */}
                                     <Col><Row><Statistic style={{ marginLeft: 490 }} value={this.state.total} /></Row></Col>
+                                    <Col><Row><a style={{marginLeft:490}}> {(this.state.total*0.07).toLocaleString()} </a></Row></Col>
+                                    <Col><Row><a style={{marginLeft:490}}> {(this.state.total*0.07 + this.state.total).toLocaleString()} </a></Row></Col>
                                     <Row><Button style={{ marginLeft: 248 }} type="primary" onClick={this.confirm}>Confirm</Button></Row>
                                 </Row> </Row>
                         </Col>
