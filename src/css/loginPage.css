@@ -50,7 +50,7 @@
 }
 
 .info h1 {
-    font-size: 20px;
+    font-size: 30px;
     text-align:top;
     font-weight: bold;
     text-indent: 20px;
@@ -83,17 +83,15 @@
     width: 275px;
 }
 
-.menuHome span {
-    text-align: center;
-    display: block;
-    padding-bottom: 10%;
+.menuHome img {
+    margin: auto;
+    left: 0px;
+    width: 40%;
+    padding-left: 5%;
 }
 
-.menuHome img {
-    display: block;
-    margin: auto;
-    border: 0;
-    left: 0px;
+.menuHome img:hover {
+    background: black;
 }
 
 .menuHome {
@@ -101,8 +99,8 @@
     vertical-align: top;
     color: #333;
     flex-direction: column;
-    background: rgba(201, 233, 235, 0.568);
-    background-size: 300px 100px;
+    background: rgb(123, 126, 126);
+    background-size: 100%;
 }
 
 .info {

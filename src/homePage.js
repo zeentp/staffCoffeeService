@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import 'antd/dist/antd.css';
 import './css/loginPage.css';
-import OrderImg from './img/buyButton.png';
-import salesPage from './img/sellButton.png';
+import OrderImg from './img/orderBtn.png';
+import salesPage from './img/historyBtn.png';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 import firebase, { auth, provider } from './firebase.js';
 import { Row, Col, Card, PageHeader, Statistic, Button, Checkbox, Layout, Menu, Breadcrumb, Table } from 'antd';
@@ -59,7 +59,7 @@ class homePage extends React.Component {
                 </Content>
                 {/* <Button type="primary" danger onClick={this.onLogout}> log out </Button> */}
 
-                <Row gutter={[16, 16]} className="info">
+                <Row gutter={[16, 16]} className="info" style={{overflow:'hidden'}}>
                     <Col span={8}>
                         <div>
                             <Card hoverable style={{width:350}}>
@@ -70,15 +70,15 @@ class homePage extends React.Component {
                         </div>
                     </Col>
                     <Col span={16}>
-                        <div style={{width:900,height:700}} className="menuHome">
-                            <h1 style={{marginTop:20}}>Menu</h1>
+                        <div style={{width:900,height:600}} className="menuHome">
+                            <h1 style={{padding:20}}>Menu</h1>
                             {/* <Button style={{marginLeft:200}} type="primary"> */}<Link to={{
                                 pathname: '/OrderPage',
-                            }}> <img src={OrderImg} className="center" /><span>Ordering</span></Link>
+                            }}> <img src={OrderImg}/></Link>
                             <Link to={{
                                 pathname: '/SalesPage',   
                             }}
-                            ><img src={salesPage} className="center" /><span>Order History</span></Link>
+                            ><img src={salesPage}/></Link>
                             
                         </div>
 
