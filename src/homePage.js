@@ -56,7 +56,7 @@ class homePage extends React.Component {
                         
                     </Breadcrumb>
                     {/* <div className="site-layout-content">Content</div> */}
-                </Content>
+                </Content >
                 {/* <Button type="primary" danger onClick={this.onLogout}> log out </Button> */}
 
                 <Row gutter={[16, 16]} className="info" style={{overflow:'hidden'}}>

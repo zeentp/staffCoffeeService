@@ -5,6 +5,7 @@ import React, { useState, Component } from 'react';
 import { BrowserRouter as Redirect, Link } from 'react-router-dom';
 // import firebase, { auth, provider } from './firebase.js';
 import firebase from './firebase.js';
+import './css/OrderPage.css';
 import { Space, Card, Layout, Menu, Breadcrumb, Select, Button, DatePicker, Row, Divider, List, Collapse, Col, Avatar, Drawer, Table, Statistic } from 'antd';
 // import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 // import { getKeyThenIncreaseKey } from 'antd/lib/message';
@@ -41,7 +42,7 @@ const columns = [
         title: 'Amount',
         dataIndex: 'amount',
     }
-    
+
 ];
 function callback(key) {
     console.log(key);
@@ -140,9 +141,9 @@ class SalesPage extends React.Component {
                 console.log('d3')
                 tempName.push(allMenu[allMenu.findIndex(x => x[0] === lstMenuId[i])][1].name)
                 tempQuantity.push(allData[allData.findIndex(x => x[0] === this.state.selectDrawer)][1].menuQuantity[i])
-                const t =allData[allData.findIndex(x => x[0] === this.state.selectDrawer)][1].menuType[i]
+                const t = allData[allData.findIndex(x => x[0] === this.state.selectDrawer)][1].menuType[i]
                 // console.log('type',allMenu[allMenu.findIndex(x => x[0] === lstMenuId[i])][1].type[t]);
-                tempAmount.push((allMenu[allMenu.findIndex(x => x[0] === lstMenuId[i])][1].type[t]* parseInt(tempQuantity[i])).toLocaleString());
+                tempAmount.push((allMenu[allMenu.findIndex(x => x[0] === lstMenuId[i])][1].type[t] * parseInt(tempQuantity[i])).toLocaleString());
                 // tempAmount.push(allMenu[allMenu.findIndex(x => x[0] === lstMenuId[i].type)][1].type * parseInt(tempQuantity[i]))
                 tempType.push(allData[allData.findIndex(x => x[0] === this.state.selectDrawer)][1].menuType[i])
                 tempPrice.push(allMenu[allMenu.findIndex(x => x[0] === lstMenuId[i])][1].type[t]);
@@ -243,7 +244,7 @@ class SalesPage extends React.Component {
         >
                 <Divider>Order Number</Divider>
 
-                <p className="site-description-item-profile-p" style={{ textAlign: "center" }}>{this.state.selectDrawer != -1 ?
+                <p style={{ textAlign: "center" }}>{this.state.selectDrawer != -1 ?
                     allData[allData.findIndex(x => x[0] === this.state.selectDrawer)][1].orderId : ""}</p>
 
                 <Divider />
@@ -270,38 +271,42 @@ class SalesPage extends React.Component {
                     allData[allData.findIndex(x => x[0] === this.state.selectDrawer)][1].time : ""}</p>
             </Drawer> </div>
         return (
-            <Layout className="layout">
-                <Header>
+            
+                <div >
+                <Layout className="layout" style={{ fontFamily: "Kanit, sans-serif" }}>
+                    <Header>
+                        <div style={{fontSize:30,height:0, marginLeft: 1450, }}>Cashier: {this.state.name}</div>
+                        {/* ตรงนี้นะ ปุ่ม logout Erorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr */}
+                        
+                        <Button className="logout-button" style={{marginRight:10}} type="primary" danger onClick={this.onLogout}> log out </Button>
+                        <Menu
+                            theme="dark"
+                            mode="horizontal"
+                            defaultSelectedKeys={['3']} inlineIndent="24"
+                            style={{ lineHeight: '64px', marginLeft: 40 }}
 
-                    <Button className="logout-button" type="primary" danger onClick={this.onLogout}> log out </Button>
-                    <Button style={{ fontSize: 16, height: 35 }} type="primary">cashier: {this.state.name}</Button>,
+                        >
+                            <Menu.Item key="1"><Link to='/MainPage'>Home</Link></Menu.Item>
+                            {/* <Menu.Item key="3"><Link to='/CheckInInfoShow'>Menu</Link></Menu.Item> */}
+                            <Menu.Item key="2"><Link to='/OrderPage'>Ordering</Link></Menu.Item>
+                            <Menu.Item key="3"><Link to='/SalesPage'>OrderHistoring</Link></Menu.Item>
+                            {/* <Menu.Item key="4"><Link to='/HistoryInfoShow'>Contact</Link></Menu.Item> */}
 
-                </Header>
-                <Content style={{ padding: '0 50px' }}>
-                    <Breadcrumb style={{ margin: '16px 0' }}>
-                        <Breadcrumb style={{ margin: '16px 0' }}>
-                            <Link to={{
-                                pathname: '/HomePage',
+                        </Menu>
+                    </Header>
+                    <Content style={{ padding: '0 50px' }}>
+ 
+                             <DatePicker style={{marginTop:20, marginLeft:20}} onChange={this.onChange} />
+                            <Divider orientation="right"><Statistic title="Total" value={this.state.totalOfTheDay}> </Statistic> </Divider>
+                                    <div>{listOfItem}</div>
 
-                            }}><Breadcrumb.Item>Home</Breadcrumb.Item></Link>
-                            <Link to={{
-                                pathname: '/SalesPage',
+                    </Content>
 
-                            }}
-                            ><Breadcrumb.Item></Breadcrumb.Item></Link>
-                            <Breadcrumb.Item>Total</Breadcrumb.Item>
-                        </Breadcrumb>
-                    </Breadcrumb>
-
-                    <DatePicker onChange={this.onChange} />
-                    <Divider orientation="right"><Statistic title="Total" value={this.state.totalOfTheDay}> </Statistic> </Divider>
-
-
-
-                    <div>{listOfItem}</div>
-                </Content>
-                {/* <Footer style={{ color: "white", backgroundColor: " rgb(187, 187, 187)", textAlign: 'center', position: 'fixed', left: 0, bottom: 0, width: "100%" }}>Orso Polare Café</Footer> */}
-            </Layout>
+                        <div style={{ background: '#fff', backgroundColor: "#23395d" }}> </div>
+                    <Footer style={{ textAlign: 'center' }}>Orso Polare Coffee & Bistro</Footer>
+                </Layout>
+            </div>
+               
         );
     }
 }

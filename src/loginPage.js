@@ -99,7 +99,7 @@ class loginPage extends React.Component {
     // }
     if (this.state.loginStatus === true) {
       console.log('check')
-      this.props.history.push("/HomePage")
+      this.props.history.push("/MainPage")
     }
  
     return (

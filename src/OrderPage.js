@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import 'antd/dist/antd.css';
 import './css/OrderPage.css';
-import OrderImg from './img/buyButton.png';
-import salesPage from './img/sellButton.png';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import firebase, { auth, provider } from './firebase.js';
-import { Statistic, Button, Card, Modal, Layout, Breadcrumb, Table, Tabs, Row, Col, Divider, message, Radio } from 'antd';
+import { Statistic, Button, Card, Modal, Layout, Breadcrumb, Table, Tabs, Row, Col, Divider, message, Radio, Menu } from 'antd';
 import { MinusOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { getKeyThenIncreaseKey } from 'antd/lib/message';
+import Bgimg from './css/bgg.jpg';
+
+import FinishPage from './FinishPage';
 const { Meta } = Card;
 const { TabPane } = Tabs;
 const { Header, Content, Footer } = Layout;
@@ -20,8 +21,8 @@ class OrderPage extends React.Component {
         allData: [],
         orders: [],
         total: 0,
-        totalWithVat:0,
-        vat:0,
+        totalWithVat: 0,
+        vat: 0,
         types: "",
         columns: [
             {
@@ -94,7 +95,6 @@ class OrderPage extends React.Component {
 
         for (var i = 0; i < orders.length; i++) {
             total += orders[i].quantity * orders[i].unitPrice
-           
 
             console.log(total)
         }
@@ -132,7 +132,7 @@ class OrderPage extends React.Component {
         const name = loginStatus ? localStorage.getItem('name') : '';
         const role = loginStatus ? localStorage.getItem('role') : '';
         const orderId = loginStatus ? localStorage.getItem('orderId') : '';
-        this.setState({ loginStatus, name, role, orderId});
+        this.setState({ loginStatus, name, role, orderId });
         console.log(loginStatus)
     }
 
@@ -223,7 +223,7 @@ class OrderPage extends React.Component {
         let wholedata = [];
         const min = 1000;
         const max = 9999;
-       
+
         if (key == 'coffee' || key == "non-coffee") {
             db.collection('menu').where("category", "==", key).get()
                 .then((res) => {
@@ -258,7 +258,7 @@ class OrderPage extends React.Component {
             let m = []
             let q = []
             let t = []
-            
+
             const o_date = new Intl.DateTimeFormat;
             const f_date = (m_ca, m_it) => Object({ ...m_ca, [m_it.type]: m_it.value });
             const m_date = o_date.formatToParts().reduce(f_date, {});
@@ -269,9 +269,9 @@ class OrderPage extends React.Component {
             const orders = [...this.state.orders]
             const time = new Date().toLocaleTimeString();
             const r = Math.floor(Math.random() * 9999) + 1000;
-            const rand = String(r) 
-            console.log("a",rand)
-            localStorage.setItem('orderId',rand);
+            const rand = String(r)
+            console.log("a", rand)
+            localStorage.setItem('orderId', rand);
             console.log('date', this.state.date)
             // let lst = "[]"
             for (var i = 0; i < orders.length; i++) {
@@ -292,9 +292,15 @@ class OrderPage extends React.Component {
                 date: a,
                 time: time,
                 total: this.state.total,
-                vat: this.state.total*0.07,
-                totalWithVat:this.state.total+this.state.vat,
-                
+                vat: (this.state.total / 1.07 * 0.07).toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }),
+                subTotal: (this.state.total / 1.07).toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }),
+
             })
                 .then(docRef => {
                     console.log("add success~")
@@ -304,6 +310,7 @@ class OrderPage extends React.Component {
                         state: { detail: rand }
                     }) 
                 })
+            
         }
     }
     decline = (record) => {
@@ -349,17 +356,7 @@ class OrderPage extends React.Component {
                     }
                 >
 
-                    {/* <Card  */}
-                    {/* style={{ textAlign: "center" }}
-                        title={name} bordered={false}> */}
-                    {/* <h1 className="formatB"> */}
-                    {/* <Radio.Group  >   onAccept(id, name,  type.value,type) */}
-
-
-                    {/* </Radio.Group> */}
-                    {/* price: {price}<br /> */}
-                    {/* type: {type} */}
-                    {/* </h1> */}<h1 style={{ textAlign: "center", color: "gray", fontFamily: "Comic Sans MS, cursive, sans-serif" }}>{name}</h1>
+                <h1 style={{ textAlign: "center", color: "gray", fontFamily: "Comic Sans MS, cursive, sans-serif" }}>{name}</h1>
                     <Divider></Divider>
                     <Button type="primary" danger onClick={() => this.selectType("hot", id, name, type)} value="hot">hot: {type["hot"]}</Button>
                     <Button type="primary" onClick={() => this.selectType("iced", id, name, type)} value="iced">iced: {type["iced"]}</Button>
@@ -373,73 +370,75 @@ class OrderPage extends React.Component {
             return (<div> {component}</div>)
         })
         return (
+            <div style={{ backgroundColor:"#23395d" }} >
+                <Layout className="layout" style={{ fontFamily: "Kanit, sans-serif" }}>
+                    <Header>
+                    <div style={{fontSize:30,height:0, marginLeft: 1450, }}>Cashier: {this.state.name}</div>
+                        <Button className="logout-button" type="primary" danger onClick={this.onLogout}> log out </Button>
+                        <Menu
+                            theme="dark"
+                            mode="horizontal"
+                            defaultSelectedKeys={['2']} inlineIndent="24"
+                            style={{ lineHeight: '64px', marginLeft: 40 }}
 
-            <Layout className="layout">
-                <Header>
-                    <Button className="logout-button" type="primary" danger onClick={this.onLogout}> log out </Button>
-                    <Button style={{ fontSize: 16, height: 35 }} type="primary">cashier: {this.state.name}</Button>,
-                    {/* <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['8']}>
-                    </Menu> */}
-                    {/* this.state.name */}
-                </Header>
-                <Content style={{ padding: '0 50px' }}>
-                    <Breadcrumb style={{ margin: '16px 0' }}>
-                        <Breadcrumb style={{ margin: '16px 0' }}>
-                            <Link to={{
-                                pathname: '/HomePage',
+                        >
+                            <Menu.Item key="1"><Link to='/MainPage'>Home</Link></Menu.Item>
+                            {/* <Menu.Item key="3"><Link to='/CheckInInfoShow'>Menu</Link></Menu.Item> */}
+                            <Menu.Item key="2"><Link to='/OrderPage'>Ordering</Link></Menu.Item>
+                            <Menu.Item key="3"><Link to='/SalesPage'>OrderHistoring</Link></Menu.Item>
+                            {/* <Menu.Item key="4"><Link to='/HistoryInfoShow'>Contact</Link></Menu.Item> */}
 
-                            }}><Breadcrumb.Item>Home</Breadcrumb.Item></Link>
-                            <Link to={{
-                                pathname: '/SalesPage',
+                        </Menu>
+                    </Header>
+                    <Content style={{ padding: '0 50px' }}>
+    <Row className="site-layout-content" >
+                            <Col span={13} className="listOrder">
+                                <Row>
+                                    <Tabs style={{ marginRight: 200 }} defaultActiveKey="1" onChange={this.callback} >
+                                        <   TabPane tab="All" key="all"></TabPane>
+                                        <TabPane tab="Coffee" key="coffee"></TabPane>
+                                        <TabPane tab="Non-Coffee" key="non-coffee"></TabPane>
+                                    </Tabs>
+                                </Row>
+                                <Row gutter={[32, 32]}>
+                                    {listOfItem}
+                                </Row>
+                            </Col>
+                            <Col className='listOrder'>
+                                <Row>
+                                    <Table style={{ marginLeft: 5 }} pagination={false} columns={this.state.columns} dataSource={this.state.orders} rowKey={record => record.key} />
+                                </Row>
+                                <Row>
 
-                            }}
-                            ><Breadcrumb.Item></Breadcrumb.Item></Link>
-                            <Breadcrumb.Item>Order</Breadcrumb.Item>
-                        </Breadcrumb>
-                    </Breadcrumb>
-                    {/* <div className="site-layout-content">Content</div> */}
-                    <Row className="site-layout-content">
+                                </Row>
+                            </Col>
+                            <Col style={{ marginLeft: 5 }}>
+                                <h1 className="listPrice">Subtotal: {(this.state.total / 1.07).toLocaleString(undefined, {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                })}
+                                </h1>
 
-                        <Col span={13} className="listOrder"  style={{ backgroundColor: "rgb(255, 255, 255, 0.3)" }} >
-                            <Row>
-                                <Tabs style={{ marginRight: 200 }} defaultActiveKey="1" onChange={this.callback} >
-                                    <   TabPane tab="All" key="all"></TabPane>
-                                    <TabPane tab="Coffee" key="coffee"></TabPane>
-                                    <TabPane tab="Non-Coffee" key="non-coffee"></TabPane>
-                                </Tabs>
-                            </Row>
-                            <Row gutter={[32, 32]}>
-                                {listOfItem}
-                            </Row>
-                        </Col>
-                        <Col className='listOrder'>
-                            <Row>
-                                <Table style={{ marginLeft: 5}} pagination={false} columns={this.state.columns} dataSource={this.state.orders} rowKey={record => record.key} />
-                            </Row>
-                            <Row>
-                                
-                            </Row>
-                        </Col>
-                        <Col style={{ marginLeft: 5 }}>
-                                    <h1 className="listPrice">Subtotal: {(this.state.total/1.07).toLocaleString(undefined, {minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2})}
-                                    </h1>
+                                <h1 className="listPrice">Vat: {(this.state.total / 1.07 * 0.07).toLocaleString(undefined, {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                })}
+                                </h1>
+                                <h1 className="listTotalPrice">Total: {this.state.total.toLocaleString(undefined, {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                })}
+                                </h1>
+                                <Row><Button style={{ marginLeft: 10 }} type="primary" onClick={this.confirm}>Confirm</Button></Row>
+                            </Col>
+                        </Row>
+                    </Content>
+                        
 
-                                    <h1 className="listPrice">Vat: {(this.state.total/1.07*0.07).toLocaleString(undefined, {minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2}) }
-                                    </h1>
-
-                                    <h1 className="listTotalPrice">Total: {this.state.total.toLocaleString(undefined, {minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2})}
-                                    </h1>
-                                    
-                                    <Row><Button style={{ marginLeft: 10 }} type="primary" onClick={this.confirm}>Confirm</Button></Row>
-                        </Col>
-                    </Row>
-
-                </Content>
-                {/* <Footer style={{  color:"white",backgroundColor:" rgb(187, 187, 187)" ,textAlign: 'center', position: 'fixed', left: 0, bottom: 0, width: "80%" }}>Orso Polare Café</Footer> */}
-            </Layout>
+                        <div style={{ background: '#fff', backgroundColor: "#23395d" }}> </div>
+                    <Footer style={{ textAlign: 'center' }}>Orso Polare Coffee & Bistro</Footer>
+                </Layout>
+            </div>
         );
     }
 }
