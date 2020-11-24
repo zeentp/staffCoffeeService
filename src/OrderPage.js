@@ -39,7 +39,7 @@ class OrderPage extends React.Component {
             {
                 title: 'Units',
                 dataIndex: 'unit',
-                width: 120,
+                width: 10,
                 align: 'center',
                 render: (text, record) => (
 
@@ -400,7 +400,7 @@ class OrderPage extends React.Component {
                     {/* <div className="site-layout-content">Content</div> */}
                     <Row className="site-layout-content">
 
-                        <Col className="listOrder" span={13} style={{ backgroundColor: "rgb(255, 255, 255, 0.3)" }} >
+                        <Col span={13} className="listOrder"  style={{ backgroundColor: "rgb(255, 255, 255, 0.3)" }} >
                             <Row>
                                 <Tabs style={{ marginRight: 200 }} defaultActiveKey="1" onChange={this.callback} >
                                     <   TabPane tab="All" key="all"></TabPane>
@@ -412,19 +412,28 @@ class OrderPage extends React.Component {
                                 {listOfItem}
                             </Row>
                         </Col>
-                        <Col span={10}>
+                        <Col className='listOrder'>
                             <Row>
-                                <Table style={{ marginLeft: 60 }} pagination={false} columns={this.state.columns} dataSource={this.state.orders} rowKey={record => record.key} />
+                                <Table style={{ marginLeft: 5}} pagination={false} columns={this.state.columns} dataSource={this.state.orders} rowKey={record => record.key} />
                             </Row>
-                            <Row> <Divider>Total</Divider>
-                                <Row>
+                            <Row>
+                                
+                            </Row>
+                        </Col>
+                        <Col style={{ marginLeft: 5 }}>
+                                    <h1 className="listPrice">Subtotal: {(this.state.total/1.07).toLocaleString(undefined, {minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2})}
+                                    </h1>
 
-                                    {/* <Col>สรุปยอดเงิน</Col> */}
-                                    <Col><Row><Statistic style={{ marginLeft: 490 }} value={this.state.total} /></Row></Col>
-                                    <Col><Row><a style={{marginLeft:490}}> {(this.state.total*0.07).toLocaleString()} </a></Row></Col>
-                                    <Col><Row><a style={{marginLeft:490}}> {(this.state.total*0.07 + this.state.total).toLocaleString()} </a></Row></Col>
-                                    <Row><Button style={{ marginLeft: 248 }} type="primary" onClick={this.confirm}>Confirm</Button></Row>
-                                </Row> </Row>
+                                    <h1 className="listPrice">Vat: {(this.state.total/1.07*0.07).toLocaleString(undefined, {minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2}) }
+                                    </h1>
+
+                                    <h1 className="listTotalPrice">Total: {this.state.total.toLocaleString(undefined, {minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2})}
+                                    </h1>
+                                    
+                                    <Row><Button style={{ marginLeft: 10 }} type="primary" onClick={this.confirm}>Confirm</Button></Row>
                         </Col>
                     </Row>
 

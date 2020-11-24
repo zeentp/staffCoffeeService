@@ -1,41 +1,56 @@
 .site-layout-content {
-    min-height: 280px;
-    padding: 20px;
-    background: rgb(255, 255, 255);
-    
+  min-height: 280px;
+  padding: 20px;
+  background: rgb(255, 255, 255);
+  overflow-y: scroll;
+}
+
+.logo {
+  float: left;
+  width: 180px;
+  height: 31px;
+  margin: 16px 24px 16px 0;
+  background: rgba(255, 255, 255, 0.3);
   }
-  .logo {
-    float: left;
-    width: 180px;
-    height: 31px;
-    margin: 16px 24px 16px 0;
-    background: rgba(255, 255, 255, 0.3);
+
+.user {
+  float: right;
+  width: 200px;
+  height: 31px;
+  margin: 16px 24px 16px 0;
+  background: rgba(255, 255, 255, 0.3);
   }
-  .user {
-    float: right;
-    width: 200px;
-    height: 31px;
-    margin: 16px 24px 16px 0;
-    background: rgba(255, 255, 255, 0.3);
+.ant-row-rtl .logo {
+  float: right;
+  margin: 16px 0 16px 24px;
   }
-  .ant-row-rtl .logo {
-    float: right;
-    margin: 16px 0 16px 24px;
-  }
+
 [data-theme="dark"] .site-layout-content {
       background: firebrick;
 }
-.table{
-    width: 550px;
-}
+
+/* .table{
+  width: 550px;
+} */
+
 .listOrder{
   width: 500px;
   height: 100%;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
   height: 600px;
-
+  table-layout: fixed
 }
+
 .catTab{
   padding-left: 50px;
   height: 600px;
+}
+
+.listPrice {
+  font-size: 16px;
+}
+
+.listTotalPrice {
+  font-style: bold;
 }
