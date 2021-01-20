@@ -40,7 +40,7 @@ class MainPage extends Component {
             <div >
                 <Layout className="layout" style={{ fontFamily: "Kanit, sans-serif" }}>
                     <Header>
-                        <div style={{fontSize:30,height:0, marginLeft: 1450, }}>Cashier: {this.state.name}</div>
+                        <div style={{fontSize:20,height:0, marginLeft: 1200,color:"grey" }}>Cashier: {this.state.name}</div>
                         <Button className="logout-button" type="primary" danger onClick={this.onLogout}> log out </Button>
                         <Menu
                             theme="dark"
@@ -52,7 +52,7 @@ class MainPage extends Component {
                             <Menu.Item key="1"><Link to='/MainPage'>Home</Link></Menu.Item>
                             {/* <Menu.Item key="3"><Link to='/CheckInInfoShow'>Menu</Link></Menu.Item> */}
                             <Menu.Item key="2"><Link to='/OrderPage'>Ordering</Link></Menu.Item>
-                            <Menu.Item key="3"><Link to='/SalesPage'>OrderHistoring</Link></Menu.Item>
+                            <Menu.Item key="3"><Link to='/SalesPage'>OrderHistory</Link></Menu.Item>
                             {/* <Menu.Item key="4"><Link to='/HistoryInfoShow'>Contact</Link></Menu.Item> */}
 
                         </Menu>

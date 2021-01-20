@@ -43,7 +43,7 @@ class homePage extends React.Component {
             <Layout className="layout">
                 <Header>
                     <Button className="logout-button" type="primary" danger onClick={this.onLogout}> log out </Button>
-                    <Button style={{fontSize:16,height:35}} type="primary">cashier: {this.state.name}</Button>,
+                    <Button style={{fontSize:16,height:35,color:"white"}} type="primary">cashier: {this.state.name}</Button>,
                     {/*  */}
                     {/* <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['8']}>
                     </Menu> */}

@@ -23,6 +23,7 @@ class OrderPage extends React.Component {
         total: 0,
         totalWithVat: 0,
         vat: 0,
+        discount:0,
         types: "",
         columns: [
             {
@@ -292,11 +293,31 @@ class OrderPage extends React.Component {
                 date: a,
                 time: time,
                 total: this.state.total,
-                vat: (this.state.total / 1.07 * 0.07).toLocaleString(undefined, {
+                vat: (this.state.total * 0.07).toLocaleString(undefined, {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2
                 }),
-                subTotal: (this.state.total / 1.07).toLocaleString(undefined, {
+                subTotal: (this.state.total - this.state.total * 0.07).toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }),
+
+            })
+            db.collection('receipt').add({
+                receiptId: rand,
+                orderId: rand,
+                menuName: m,
+                menuQuantity: q,
+                menuType: t,
+                name: this.state.name,
+                date: a,
+                time: time,
+                total: this.state.total,
+                vat: (this.state.total * 0.07).toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }),
+                subTotal: (this.state.total - this.state.total * 0.07).toLocaleString(undefined, {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2
                 }),
@@ -358,11 +379,11 @@ class OrderPage extends React.Component {
 
                 <h1 style={{ textAlign: "center", color: "gray", fontFamily: "Comic Sans MS, cursive, sans-serif" }}>{name}</h1>
                     <Divider></Divider>
+                    
                     <Button type="primary" danger onClick={() => this.selectType("hot", id, name, type)} value="hot">hot: {type["hot"]}</Button>
                     <Button type="primary" onClick={() => this.selectType("iced", id, name, type)} value="iced">iced: {type["iced"]}</Button>
-
-
                 </Card >
+                
                 </Col>
 
             )
@@ -373,7 +394,7 @@ class OrderPage extends React.Component {
             <div style={{ backgroundColor:"#23395d" }} >
                 <Layout className="layout" style={{ fontFamily: "Kanit, sans-serif" }}>
                     <Header>
-                    <div style={{fontSize:30,height:0, marginLeft: 1450, }}>Cashier: {this.state.name}</div>
+                    <div style={{fontSize:20,height:0, marginLeft: 1200,color:"grey" }}>Cashier: {this.state.name}</div>
                         <Button className="logout-button" type="primary" danger onClick={this.onLogout}> log out </Button>
                         <Menu
                             theme="dark"
@@ -392,7 +413,7 @@ class OrderPage extends React.Component {
                     </Header>
                     <Content style={{ padding: '0 50px' }}>
     <Row className="site-layout-content" >
-                            <Col span={13} className="listOrder">
+                            <Col className="listOrder">
                                 <Row>
                                     <Tabs style={{ marginRight: 200 }} defaultActiveKey="1" onChange={this.callback} >
                                         <   TabPane tab="All" key="all"></TabPane>
@@ -404,7 +425,7 @@ class OrderPage extends React.Component {
                                     {listOfItem}
                                 </Row>
                             </Col>
-                            <Col className='listOrder'>
+                            <Col span={10} className='listOrder'>
                                 <Row>
                                     <Table style={{ marginLeft: 5 }} pagination={false} columns={this.state.columns} dataSource={this.state.orders} rowKey={record => record.key} />
                                 </Row>
@@ -413,13 +434,13 @@ class OrderPage extends React.Component {
                                 </Row>
                             </Col>
                             <Col style={{ marginLeft: 5 }}>
-                                <h1 className="listPrice">Subtotal: {(this.state.total / 1.07).toLocaleString(undefined, {
+                                <h1 className="listPrice">Subtotal: {(this.state.total - this.state.total * 0.07).toLocaleString(undefined, {
                                     minimumFractionDigits: 2,
                                     maximumFractionDigits: 2
                                 })}
                                 </h1>
 
-                                <h1 className="listPrice">Vat: {(this.state.total / 1.07 * 0.07).toLocaleString(undefined, {
+                                <h1 className="listPrice">Vat: {(this.state.total  * 0.07).toLocaleString(undefined, {
                                     minimumFractionDigits: 2,
                                     maximumFractionDigits: 2
                                 })}

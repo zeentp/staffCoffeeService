@@ -6,7 +6,11 @@ import './css/OrderPage.css';
 import { BrowserRouter as Redirect, Link } from 'react-router-dom';
 // import firebase, { auth, provider } from './firebase.js';
 import firebase from './firebase.js';
-import { Result, Button, Card, Divider, Drawer, Table, Col, Row,Input, Tooltip,message } from 'antd';
+import { Result, Button, Card, Divider, Drawer, Table, Col, Row, Tooltip,message,Input } from 'antd';
+import ReactToPrint from "react-to-print";
+import {render} from "react-dom"
+import ActionButton from 'antd/lib/modal/ActionButton';
+
 function formatNumber(value) {
     value += '';
     const list = value.split('.');
@@ -64,14 +68,20 @@ class FinishPage extends React.Component {
             selectDrawer: -1,
             tableData: [],
             value: '',
-            change:''
+            change:'',
+            customerName: '',
         }
     }
     onChange = value => {
         console.log(value)
         this.setState({ value });
       };
-
+      onChangeCustomer = customerName => {
+        // console.log(customerName.nativeEvent.data)
+        var cn = this.state.customerName + customerName.nativeEvent.data
+        this.setState({ customerName:  cn});
+        console.log(this.state.customerName);
+      };
     
     componentDidMount() {
         const wholedata2 = []
@@ -101,7 +111,12 @@ class FinishPage extends React.Component {
                 wholedata.push(temp)
             });
             this.setState({ allData: wholedata  })
+            console.log(this.state.allData)
+            // console.log(allData[allData.findIndex(x=>x[1].orderId==this.state.orderId)])
+
             console.log('all',this.state.allData)
+            // console.log(allData)
+        // console.log(allData[allData.findIndex(x=>x[0].orderId==this.state.orderId)])
             let tempName = []
             let tempQuantity = []
             let tempAmount = []
@@ -145,7 +160,24 @@ class FinishPage extends React.Component {
        
         
     }
-    onSubmitNumber=(v,t) => {
+    onSubmitCustomer = async (customerName) => {
+      await this.setState({customerName: customerName});
+      await db.collection('receipt').where('orderId', '==', this.state.orderId).get()
+      .then((res) => {
+        res.forEach(doc => {
+         let id = doc.id
+         console.log(id);
+         console.log(doc.data());
+         let data = doc.data();
+         data['customerName'] = this.state.customerName
+         console.log(data);
+         var receipt = db.collection('receipt').doc(id)
+         var addCustomerName = receipt.set(data);
+
+        })
+      })
+    }
+    onSubmitNumber=async(v,t) => {
         if(parseInt(v) <= 0){
             message.error('Money must be Positive');
 
@@ -154,7 +186,46 @@ class FinishPage extends React.Component {
             message.error('Please Paid in full');
 
         }else{
-           this.setState({ change: v - t})
+          var id;
+           await this.setState({ change: v - t})
+           console.log(this.state.change);
+           await db.collection('receipt').where('orderId', '==', this.state.orderId).get()
+           .then((res) => {
+             res.forEach(doc => {
+               id = doc.id
+               console.log(doc.id);
+               console.log(doc.data());
+               let data = doc.data();
+               data["paid"] = parseInt(v);
+               data["change"] = this.state.change;
+               db.collection('receipt').add(data)
+               db.collection('receipt').doc(id).delete().then(function() {
+                  console.log("Document successfully deleted!");
+                }).catch(function(error) {
+                  console.error("Error removing document: ", error);
+                });
+             })
+           })
+           await db.collection('order').where('orderId', '==', this.state.orderId).get()
+           .then((res) => {
+             res.forEach(doc => {
+              id = doc.id
+              var order = db.collection('order').doc(id)
+              var removeVat = order.update({
+                vat: firebase.firestore.FieldValue.delete()
+              });
+
+             })
+           })
+          
+           
+          //  console.log(this.state.orderId)
+           
+          //  db.collection('receipt').where("orderId","==",this.state.orderId).add({
+          //    change:this.state.change
+            
+
+          //  })
             
         }
     }
@@ -190,8 +261,15 @@ class FinishPage extends React.Component {
         }
       };
 
+    toPrint = (comp) => {
+      <div><ReactToPrint content={() => this.comp} /></div>
+    }
+
+
     render() {
         const { allData } = this.state
+        // console.log(allData)
+        // console.log(allData[allData.findIndex(x=>x[0].orderId==this.state.orderId)])
         if (this.state.loginStatus !== true) {
             console.log('check')
             this.props.history.push("/")
@@ -208,8 +286,9 @@ class FinishPage extends React.Component {
             var vat = item[1].vat
             var subTotal = item[1].subTotal
             var component = (
-                <Card style={{width:500,marginLeft:650}} >
 
+                <Card style={{width:500,marginLeft:550}} >
+                <div className="compToPrint">
                 <Divider>Order Number</Divider>
 
                 <p className="site-description-item-profile-p" style={{ textAlign: "center" }}>{orderId}</p>
@@ -241,25 +320,30 @@ class FinishPage extends React.Component {
                 <Row>  <h2 style={{fontSize:16}}>PAID</h2>  
                 <NumericInput style={{ width: 120,marginLeft:100 }} value={this.state.value} onChange={this.onChange} /> 
                 <Button onClick={()=>this.onSubmitNumber(this.state.value,total)}>submit</Button></Row>
+
+                <Row>  <h2 style={{fontSize:16}}>Name</h2>  
+                <Input style={{ width: 120,marginLeft:92 }} onChange={this.onChangeCustomer} /> 
+                <Button onClick={()=>this.onSubmitCustomer(this.state.customerName)}>submit</Button></Row>
+                {/* <Input style={{width:120,marginLeft:130}}></Input> */}
+                
               
-                 <h2 style={{fontSize:16}}>Change</h2>
+                <h2 style={{fontSize:16}}>Change</h2>
                 <h2 style={{fontSize:20, marginLeft: 200}}>{(this.state.change).toLocaleString()}</h2>
-                <Button style={{marginLeft:100,marginTop:15}} type="primary" key="console" onClick={this.onSubmit}>
+                <Button style={{marginLeft:90,marginTop:15}} type="primary" key="console" onClick={this.onSubmit}>
                     Go to Home
                 </Button>
-                <Button key="buy" onClick={this.onSubmit2}>Buy Again</Button>
-               
+                <Button key="buy" onClick={this.onSubmit2}>Buy Again</Button>   
+                <button onClick={() => window.print()}>PRINT</button>  
+                </div>           
             </Card >
             )
             return component
-
         })
 
         return (
            <div style={{ backgroundColor:"#23395d", display: "flex" }}>{listOfItem}</div>
-
         );
-    }
+    } 
 }
 export default FinishPage;
 

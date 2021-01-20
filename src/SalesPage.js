@@ -275,10 +275,10 @@ class SalesPage extends React.Component {
                 <div >
                 <Layout className="layout" style={{ fontFamily: "Kanit, sans-serif" }}>
                     <Header>
-                        <div style={{fontSize:30,height:0, marginLeft: 1450, }}>Cashier: {this.state.name}</div>
+                        <div style={{fontSize:30,height:0, marginLeft: 0, }}>Cashier: {this.state.name}</div>
                         {/* ตรงนี้นะ ปุ่ม logout Erorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr */}
                         
-                        <Button className="logout-button" style={{marginRight:10}} type="primary" danger onClick={this.onLogout}> log out </Button>
+                        {/* <Button className="logout-button" style={{marginRight:10}} type="primary" danger onClick={this.onLogout}> log out </Button> */}
                         <Menu
                             theme="dark"
                             mode="horizontal"
@@ -289,7 +289,7 @@ class SalesPage extends React.Component {
                             <Menu.Item key="1"><Link to='/MainPage'>Home</Link></Menu.Item>
                             {/* <Menu.Item key="3"><Link to='/CheckInInfoShow'>Menu</Link></Menu.Item> */}
                             <Menu.Item key="2"><Link to='/OrderPage'>Ordering</Link></Menu.Item>
-                            <Menu.Item key="3"><Link to='/SalesPage'>OrderHistoring</Link></Menu.Item>
+                            <Menu.Item key="3"><Link to='/SalesPage'>OrderHistory</Link></Menu.Item>
                             {/* <Menu.Item key="4"><Link to='/HistoryInfoShow'>Contact</Link></Menu.Item> */}
 
                         </Menu>
@@ -297,6 +297,8 @@ class SalesPage extends React.Component {
                     <Content style={{ padding: '0 50px' }}>
  
                              <DatePicker style={{marginTop:20, marginLeft:20}} onChange={this.onChange} />
+                        <div style={{fontSize:20,height:0, marginLeft: 40, }}>Cashier: {this.state.name}</div>
+
                             <Divider orientation="right"><Statistic title="Total" value={this.state.totalOfTheDay}> </Statistic> </Divider>
                                     <div>{listOfItem}</div>
 
