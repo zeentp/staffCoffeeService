@@ -263,8 +263,8 @@ class OrderPage extends React.Component {
             const o_date = new Intl.DateTimeFormat;
             const f_date = (m_ca, m_it) => Object({ ...m_ca, [m_it.type]: m_it.value });
             const m_date = o_date.formatToParts().reduce(f_date, {});
-            if (m_date.year == "2563") {
-                m_date.year = "2020"
+            if (m_date.year == "2564") {
+                m_date.year = "2021"
             }
             const a = m_date.year + '-' + m_date.month + '-' + m_date.day;
             const orders = [...this.state.orders]

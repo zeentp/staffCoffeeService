@@ -71,8 +71,8 @@ class SalesPage extends React.Component {
         const o_date = new Intl.DateTimeFormat;
         const f_date = (m_ca, m_it) => Object({ ...m_ca, [m_it.type]: m_it.value });
         const m_date = o_date.formatToParts().reduce(f_date, {});
-        if (m_date.year == "2563") {
-            m_date.year = "2020"
+        if (m_date.year == "2564") {
+            m_date.year = "2021"
         }
         const a = m_date.year + '-' + m_date.month + '-' + m_date.day;
         console.log(a)
@@ -133,10 +133,8 @@ class SalesPage extends React.Component {
         let tempType = []
         let tempPrice = []
         var pluginArrayArg = new Array();
-        console.log('d1')
         if (this.state.selectDrawer != -1) {
             const lstMenuId = allData[allData.findIndex(x => x[0] === this.state.selectDrawer)][1].menuName
-            console.log('d2')
             for (var i = 0; i < lstMenuId.length; i++) {
                 console.log('d3')
                 tempName.push(allMenu[allMenu.findIndex(x => x[0] === lstMenuId[i])][1].name)
@@ -172,10 +170,16 @@ class SalesPage extends React.Component {
 
     onChange = async (date, dateString) => {
         this.setState({ allData: [], selectDrawer: -1 })
-        let x = 0
-        console.log(date, dateString);
+        let x = 0       
+        // console.log("ddddd",date, dateString);
+        var date = new Date(date);
+        var year=date.getFullYear();
+        var month=date.getMonth()+1 //getMonth is zero based;
+        var day=date.getDate();
+        var formatted=year+"-"+month+"-"+day;
+    
         let wholedata = []
-        await db.collection("order").where("date", "==", dateString).get()
+        await db.collection("order").where("date", "==", formatted).get()
             .then((res) => {
                 res.forEach(doc => {
                     var temp = [];
